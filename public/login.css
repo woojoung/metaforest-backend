@@ -1,0 +1,89 @@
+.loginContainer {
+    width: 80%;
+    margin: 40px auto 80px;
+}
+.logoBox {
+    width: 140px;
+}
+.logoBox .logoImage1{
+    width: 100%;
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.loginBox {
+    width: 488px;
+    margin: 0 auto;
+}
+.headline1 {
+    margin: 30px 0;
+}
+.contentBox {
+    border: 1px solid #ced4da; 
+    border-radius: 4px;
+}
+.contentWrap {
+    padding: 24px;
+}
+.text1 {
+    text-align: right;
+}
+.text1 span {
+    color: #0d6efd;
+    font-weight: bold;
+}
+.cursorPointer {
+    cursor: pointer;
+}
+/* google btn */
+.googleBtnBox {
+    width: 150px;
+    height: 40px;
+    cursor: pointer;
+}
+.googleBtnBox img {
+    width: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.googleBox {
+  width: 100%;
+  height: 48px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  background: white;
+  white-space: nowrap;
+  cursor: pointer;
+  position: relative;
+}
+.googleBox .googleWrap {
+  overflow: hidden;
+}
+.googleBox .googleWrap .googleLogo {
+  float: left;
+  width: 42px;
+  padding: 8px 0;
+  margin: 0 12px;
+  position: absolute;
+}
+.googleBox .googleWrap .googleLogo .googleLogoImg {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.googleBox .googleWrap .googleText {
+  font-family: 'RobotoRegular', sans-serif;
+  float: left;
+  /* font-size: 14px; */
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: rgba(0, 0, 0, 0.5);
+  line-height: 48px;
+  text-align: center;
+  width: 438px;
+}

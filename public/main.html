@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <!-- <link rel="stylesheet" type="text/css" href="css/style.css" /> -->
+    <title></title>
+  </head>
+  <body>
+    <div id="board_area">
+
+      <h1>공지사항</h1>
+      <div id="search_box">
+        <form action="" method="">
+          <select name="catgo">
+            <option value="starter" selected>선택</option>
+            <option value="title">제목</option>
+            <option value="name">글쓴이</option>
+            <option value="content">내용</option>
+          </select>
+          <input type="text" name="search" size="30" required="required" /> <button>검색</button>
+        </form>
+      </div>
+
+    <table class="list-table">
+      <thead>
+          <tr>
+            <th width="70">번호</th>
+            <th width="300">제목</th>
+            <th width="120">글쓴이</th>
+          </tr>
+      </thead>
+      <tbody id="table1">
+      </tbody>
+
+    </table>
+
+    <button type="button" onclick="location.href='write.html' ">등록</button>
+
+    <!---pagination number --->
+    <p className={styles.pagination}>
+      <a href="javascript:prevPage()">이전</a>
+      | 
+      <a href="javascript:nextPage()">다음</a>
+    </p>
+
+  </div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    
+    <script>
+      'use strict'
+      var myArray = [ 
+        {noticeId : 1, title : '공지사항입니다.', name : '관리자'}, 
+        {noticeId : 2, title : '집단상담은 어떻게 진행되나요?', name : '관리자'}, 
+        {noticeId : 3, title : '플랫폼은 무료인가요?', name : '관리자'}, 
+      ];
+
+      buildTable(myArray); 
+      
+      function buildTable(data) { 
+        var table = document.getElementById('table1');
+        for (var i=0; i < data.length; i++) { 
+          var row = `<tr><td style="text-align:center">${data[i].noticeId}</td> <td style="text-align:left">${data[i].title}</td> <td style="text-align:center">${data[i].name}</td> </tr>`;
+          table.innerHTML += row 
+        } 
+      }
+
+    </script>
+
+    <script>
+      'use strict'
+      // lib.js 로 뺴기.
+      const apiGetList = async (_perPage) => {
+        try {
+          const response = await axios.post('http://127.0.0.1:7071/notice', {
+            msgType: 40,
+            data: {
+              page: _perPage + 1
+            }
+          })
+
+          console.log(response)
+
+        } catch (err) {
+          console.error(err)
+        }
+      };
+
+    </script>
+
+    <script>
+      'use strict'
+
+      let currentPageNum = 0; // localstorage에 저장하고 사용하기.
+      
+      function prevPage() {
+        if (currentPageNum > 0) {
+          currentPageNum--;
+        }
+
+        let prevPageNum = currentPageNum
+        console.log(currentPageNum)
+        // apiGetList(currentPageNum)
+
+      }
+
+      function nextPage() {
+
+        if (currentPageNum < 0) {
+          currentPageNum = -1;
+        }
+
+        let nextPageNum = currentPageNum++
+        console.log(currentPageNum)
+        // apiGetList(currentPageNum)
+
+      }
+
+      function changePage() {
+
+      }
+
+      function numPages() {
+
+      }
+
+    </script>
+
+</body>
+</html>
