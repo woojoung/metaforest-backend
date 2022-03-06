@@ -102,7 +102,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
             res.status(200).json(getRowNotice);
         } else if (req.body.msgType === eApiMessageType.USER_GET_ONE_NOTICE_REQ) {
             const getRowNotice = await Notice.findOne({
-                where: { userId: req.body.data.noticeId } 
+                where: { noticeId: req.body.data.noticeIds } 
             });
             
             res.status(200).json(getRowNotice);
@@ -120,21 +120,15 @@ router.post('/', isLoggedIn, async (req, res, next) => {
             }
 
             const insertIdNotice = await Notice.create({
-                ordering: req.body.data.ordering,
                 title: req.body.data.title,
                 content: req.body.data.content,
-                adminId: req.body.data.adminId,
-                isApproved: req.body.data.isApproved,
             });
             
             res.status(200).json(insertIdNotice);
         } else if (req.body.msgType === eApiMessageType.ADMIN_UPDATE_NOTICE_REQ) {
             await Notice.update({
-                ordering: req.body.data.ordering,
                 title: req.body.data.title,
                 content: req.body.data.content,
-                adminId: req.body.data.adminId,
-                isApproved: req.body.data.isApproved,
             }, {where: { noticeId: req.body.data.noticeId }});
             
             res.status(200).json();
