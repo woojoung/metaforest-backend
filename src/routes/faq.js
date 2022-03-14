@@ -123,9 +123,9 @@ router.post('/', isLoggedIn, async (req, res, next) => {
             });
             
             res.status(200).json(getRowFaq);
-        } else if (req.body.msgType === eApiMessageType.USER_GET_ONE_FAQ_REQ) {
+        } else if (req.body.msgType === eApiMessageType.ADMIN_GET_ONE_FAQ_REQ) {
             const getRowFaq = await Faq.findOne({
-                where: { userId: req.body.data.noticeId } 
+                where: { userId: req.body.data.faqId } 
             });
             
             res.status(200).json(getRowFaq);
