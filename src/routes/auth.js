@@ -51,6 +51,11 @@ const eApiMessageType = {
     USER_GET_LIST_FAQ_BY_CATEGORY_REQ : 11021,
 
     USER_SIGNUP_AUTHCODE_REQ : 11022,
+    USER_FIND_ACCOUNT_ID_REQ : 11023,
+    USER_FIND_PASSWD_REQ : 11024,
+
+    USER_GET_LIST_NOTICE_BY_SEARCHWORD_REQ : 11025,
+
 
     // ADMIN: 12
     ADMIN_LOGIN_REQ : 12001,
@@ -108,9 +113,9 @@ router.post('/signup', isNotLoggedIn, async (req, res, next) => { // POST /signu
 
             smtpTransport.sendMail(mailOptions, (error, response) => {
                 if (error) {
-                    return res.status(200).json({ status: "Internal Server Error", errCode: 500, message: "failed to send email"})
+                    return res.status(200).send({ status: "Internal Server Error", errCode: 500, message: "failed to send email"})
                 } else {
-                    return res.status(200).json({ status: "OK", errCode: 200, message: "success to send email", authCode: authCode})
+                    return res.status(200).send({ status: "OK", errCode: 200, message: "success to send email", authCode: authCode})
                 }
                 
             });
@@ -121,17 +126,17 @@ router.post('/signup', isNotLoggedIn, async (req, res, next) => { // POST /signu
                     email: req.body.data.email,
                 }
             });
-            const exNickname = await User.findOne({ // 이메일 검사
+            const exNickname = await User.findOne({ // 이름 검사
                 where: {
                     userNickname: req.body.data.userNickname,
                 }
             });
             if (exEmail) {
                 // return으로 res(응답)을 한번만 보내도록 한다. 응답 후 router 종료된다.
-                return res.status(200).send('used email');
+                return res.status(200).send({ status: "Internal Server Error", errCode: 500, message: "used email"});
             }
             if (exNickname) {
-                return res.status(200).send('used nickname');
+                return res.status(200).send({ status: "Internal Server Error", errCode: 500, message: "used nickname"});
             }
     
             // User 테이블에 생성하기
@@ -147,7 +152,7 @@ router.post('/signup', isNotLoggedIn, async (req, res, next) => { // POST /signu
                 accessLevel: eAccessLevel.USER,
             });
             // 요청에 대한 성공으로 status(201) : 생성이 됐다는 의미 (기재하는게 좋다.)
-            res.status(201).send('create User!');
+            res.status(201).send({ status: "OK", errCode: 200, message: "success to create user"});
         }
         
     } catch(err) {

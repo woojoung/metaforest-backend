@@ -14,6 +14,15 @@ const eAccessLevel = {
     SYSTEM_ADMIN : 60,
 }
 
+const eFaqCategory = {
+    NONE : 0,
+    ONE_TO_ONE : 10,
+    GROUP : 20,
+    EAP : 30,
+    TUTORIAL : 40,
+    COMMUNITY : 50,
+}
+
 const eApiMessageType = {
     NONE : 0,
 
@@ -46,7 +55,12 @@ const eApiMessageType = {
     USER_GET_COUNT_FAQ_REQ : 11020,
     USER_GET_LIST_FAQ_BY_CATEGORY_REQ : 11021,
 
-    
+    USER_SIGNUP_AUTHCODE_REQ : 11022,
+    USER_FIND_ACCOUNT_ID_REQ : 11023,
+    USER_FIND_PASSWD_REQ : 11024,
+
+    USER_GET_LIST_NOTICE_BY_SEARCHWORD_REQ : 11025,
+
 
     // ADMIN: 12
     ADMIN_LOGIN_REQ : 12001,
@@ -90,7 +104,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
                 order: [['ordering', 'DESC']]
             });
             
-            res.status(200).json(getRowsNotice);
+            res.status(200).send(getRowsNotice);
         } else if (req.body.msgType === eApiMessageType.USER_GET_LIST_NOTICE_REQ) {
             const getRowNotice = await Notice.findAll({
                 where: { isApproved: 'Y' },
@@ -99,10 +113,37 @@ router.post('/', isLoggedIn, async (req, res, next) => {
                 limit: 10 
             });
             
-            res.status(200).json(getRowNotice);
+            res.status(200).send(getRowNotice);
+        } else if (req.body.msgType === eApiMessageType.USER_GET_LIST_NOTICE_BY_SEARCHWORD_REQ) {
+            const searchWord = req.body.data.searchWord
+            const searchKeyword = req.body.data.searchKeyword
+
+            if (searchKeyword === 'title') {
+                const getRowNotice = await Notice.findAll({
+                    where: { isApproved: 'Y', title: {[Op.like]:'%' + searchWord + '%'} },
+                    order: [['noticeId', 'DESC']],
+                    offset: 10 * (req.body.data.page - 1),
+                    limit: 10 
+                });
+                
+                res.status(200).jssendon(getRowNotice);
+            } else if (searchKeyword === 'content') {
+                const getRowNotice = await Notice.findAll({
+                    where: { isApproved: 'Y', content: {[Op.like]:'%' + searchWord + '%'} },
+                    order: [['noticeId', 'DESC']],
+                    offset: 10 * (req.body.data.page - 1),
+                    limit: 10 
+                });
+                
+                res.status(200).send(getRowNotice);
+            } else {
+                res.status(200).send({ status: "BadRequest", errCode: 400, message: "Bad Request"});
+            }
+
+            
         } else if (req.body.msgType === eApiMessageType.USER_GET_ONE_NOTICE_REQ) {
             const getRowNotice = await Notice.findOne({
-                where: { userId: req.body.data.noticeId } 
+                where: { noticeId: req.body.data.noticeIds } 
             });
             
             res.status(200).json(getRowNotice);
@@ -116,25 +157,19 @@ router.post('/', isLoggedIn, async (req, res, next) => {
             const userAccessLevel = getRowUser[0].dataValues.accessLevel;
 
             if (userAccessLevel < eAccessLevel.SERVICE_OPERATOR) {
-                res.status(200).json({ status: "Forbidden", errCode: 403, message: "Incorect accessLevel"});
+                res.status(200).send({ status: "Forbidden", errCode: 403, message: "Incorect accessLevel"});
             }
 
             const insertIdNotice = await Notice.create({
-                ordering: req.body.data.ordering,
                 title: req.body.data.title,
                 content: req.body.data.content,
-                adminId: req.body.data.adminId,
-                isApproved: req.body.data.isApproved,
             });
             
             res.status(200).json(insertIdNotice);
         } else if (req.body.msgType === eApiMessageType.ADMIN_UPDATE_NOTICE_REQ) {
             await Notice.update({
-                ordering: req.body.data.ordering,
                 title: req.body.data.title,
                 content: req.body.data.content,
-                adminId: req.body.data.adminId,
-                isApproved: req.body.data.isApproved,
             }, {where: { noticeId: req.body.data.noticeId }});
             
             res.status(200).json();
@@ -148,16 +183,16 @@ router.post('/', isLoggedIn, async (req, res, next) => {
             const userAccessLevel = getRowUser[0].dataValues.accessLevel;
 
             if (userAccessLevel < eAccessLevel.SERVICE_OPERATOR) {
-                res.status(200).json({ status: "Forbidden", errCode: 403, message: "Incorect accessLevel"});
+                res.status(200).send({ status: "Forbidden", errCode: 403, message: "Incorect accessLevel"});
             }
 
             await Notice.destroy({
                 where: { noticeId: req.body.data.noticeIds } 
             });
             
-            res.status(200).json();
+            res.status(200).send();
         } else {
-            res.status(200).json(null);
+            res.status(200).send(null);
         }
     } catch(error) {
         console.error(error);

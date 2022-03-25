@@ -55,6 +55,13 @@ const eApiMessageType = {
     USER_GET_COUNT_FAQ_REQ : 11020,
     USER_GET_LIST_FAQ_BY_CATEGORY_REQ : 11021,
 
+    USER_SIGNUP_AUTHCODE_REQ : 11022,
+    USER_FIND_ACCOUNT_ID_REQ : 11023,
+    USER_FIND_PASSWD_REQ : 11024,
+
+    USER_GET_LIST_NOTICE_BY_SEARCHWORD_REQ : 11025,
+
+
     // ADMIN: 12
     ADMIN_LOGIN_REQ : 12001,
     ADMIN_LOGOUT_REQ : 12002,
@@ -116,9 +123,9 @@ router.post('/', isLoggedIn, async (req, res, next) => {
             });
             
             res.status(200).json(getRowFaq);
-        } else if (req.body.msgType === eApiMessageType.USER_GET_ONE_FAQ_REQ) {
+        } else if (req.body.msgType === eApiMessageType.ADMIN_GET_ONE_FAQ_REQ) {
             const getRowFaq = await Faq.findOne({
-                where: { userId: req.body.data.noticeId } 
+                where: { userId: req.body.data.faqId } 
             });
             
             res.status(200).json(getRowFaq);

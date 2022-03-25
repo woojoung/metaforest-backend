@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { User } = require('../db/models');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
-// const { eAccessLevel } = require('../enums/accessLevel')
+const { smtpTransport } = require('../config/email');
 
 const eAccessLevel = {
     NONE : 0,
@@ -31,21 +31,26 @@ const eApiMessageType = {
     USER_UPDATE_NICKNAME_REQ : 11008,
     USER_UPDATE_PROFILE_IMAGE_URL_REQ : 11009,
 
-    USER_CREATE_INQUIRY_REQ : 11008,
-    USER_UPDATE_INQUIRY_REQ : 11009,
-    USER_DELETE_INQUIRY_REQ : 11010,
-    USER_GET_ONE_INQUIRY_REQ : 11011,
-    USER_GET_LIST_INQUIRY_REQ : 11012,
+    USER_CREATE_INQUIRY_REQ : 11010,
+    USER_UPDATE_INQUIRY_REQ : 11011,
+    USER_DELETE_INQUIRY_REQ : 11012,
+    USER_GET_ONE_INQUIRY_REQ : 11013,
+    USER_GET_LIST_INQUIRY_REQ : 11014,
 
-    USER_GET_ONE_NOTICE_REQ : 11013,
-    USER_GET_LIST_NOTICE_REQ : 11014,
-    USER_GET_COUNT_NOTICE_REQ : 11015,
+    USER_GET_ONE_NOTICE_REQ : 11015,
+    USER_GET_LIST_NOTICE_REQ : 11016,
+    USER_GET_COUNT_NOTICE_REQ : 11017,
 
-    USER_GET_ONE_FAQ_REQ : 11016,
-    USER_GET_LIST_FAQ_REQ : 11017,
-    USER_GET_COUNT_FAQ_REQ : 11018,
-    USER_GET_LIST_FAQ_BY_CATEGORY_REQ : 11019,
+    USER_GET_ONE_FAQ_REQ : 11018,
+    USER_GET_LIST_FAQ_REQ : 11019,
+    USER_GET_COUNT_FAQ_REQ : 11020,
+    USER_GET_LIST_FAQ_BY_CATEGORY_REQ : 11021,
 
+    USER_SIGNUP_AUTHCODE_REQ : 11022,
+    USER_FIND_ACCOUNT_ID_REQ : 11023,
+    USER_FIND_PASSWD_REQ : 11024,
+
+    USER_GET_LIST_NOTICE_BY_SEARCHWORD_REQ : 11025,
 
 
     // ADMIN: 12
@@ -117,7 +122,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
                 order: [['userId', 'DESC']]
             });
             
-            res.status(200).json(getRowsUser);
+            res.status(200).send(getRowsUser);
         } else if (req.body.msgType === eApiMessageType.USER_GET_ONE_INFO_REQ) {
             const getRowUser = await User.findOne({
                 where: { userId: req.body.data.userId } 
@@ -137,9 +142,33 @@ router.post('/', isLoggedIn, async (req, res, next) => {
                 accessLevel: req.body.data.accessLevel
             }, {where: { userId: req.body.data.userId }});
             
-            res.status(200).json('');
+            res.status(200).send('');
+        } else if (req.body.msgType === eApiMessageType.USER_FIND_ACCOUNT_ID_REQ) {
+            const getRowUser = await User.findOne({
+                where: { userNickname: req.body.data.userNickname, email: req.body.data.email  } 
+            });
+            console.log(getRowUser)
+            res.status(200).send(getRowUser);
+        } else if (req.body.msgType === eApiMessageType.USER_FIND_PASSWD_REQ) {
+            const sendEmail = req.body.data.sendEmail
+            const mailOptions = {
+                from: "metaforest",
+                to: sendEmail,
+                subject: "인증메일 입니다",
+                text: "인증번호 : " + authCode
+            }
+
+            smtpTransport.sendMail(mailOptions, (error, response) => {
+                if (error) {
+                    return res.status(200).send({ status: "Internal Server Error", errCode: 500, message: "failed to send email"})
+                } else {
+                    return res.status(200).send({ status: "OK", errCode: 200, message: "success to send email"})
+                }
+                
+            });
+            res.status(200).send({ status: "OK", errCode: 200, message: "success to send email"});
         } else {
-            res.status(200).json(null);
+            res.status(200).send(null);
         }
     } catch(error) {
         console.error(error);
