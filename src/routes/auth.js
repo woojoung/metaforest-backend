@@ -6,8 +6,7 @@ const passport = require('passport');
 
 const router = express.Router();
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
-// const { smtpTransport } = require('../config/email');
-const nodemailer = require('nodemailer');
+const { smtpTransport } = require('../config/email');
 
 const eAccessLevel = {
     NONE : 0,
@@ -106,17 +105,6 @@ router.post('/signup', isNotLoggedIn, async (req, res, next) => { // POST /signu
             const sendEmail = req.body.data.email
             const authCode = generateRandom(11111, 99999);
 
-            const transporter = nodemailer.createTransport({
-                service: 'Naver',
-                auth: {
-                    user: process.env.USER_EMAIL,
-                    pass: process.env.USER_EMAIL_PASSWD
-                },
-                tls: {
-                    rejectUnauthorized: false
-                }
-            })
-
             const mailOptions = {
                 from: `metaforest <${process.env.USER_EMAIL}>`,
                 to: sendEmail,
@@ -124,18 +112,14 @@ router.post('/signup', isNotLoggedIn, async (req, res, next) => { // POST /signu
                 text: "authCode : " + authCode
             }
 
-            transporter.sendMail(mailOptions, (error, info) => {
+            smtpTransport.sendMail(mailOptions, (error, info) => {
                 if (error) {
-                    console.log(mailOptions);
-                    console.log(process.env.USER_EMAIL);
-                    console.log(error);
+                    // console.log(error);
                     return res.status(200).send({ status: "Internal Server Error", errCode: 500, message: "failed to send email" });
                 } else {
-                    console.log(info.response);
+                    // console.log(info.response);
                     return res.status(200).send({ status: "OK", errCode: 200, message: "success to send email", authCode: authCode });
                 }
-
-                transporter.close()
 
             });
             
