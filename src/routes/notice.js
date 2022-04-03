@@ -103,58 +103,60 @@ router.post('/', isLoggedIn, async (req, res, next) => {
             const getRowsNotice = await Notice.findAll({
                 order: [['ordering', 'DESC']]
             });
-            
+            console.log('getRowsNotice: ', getRowsNotice);
             res.status(200).send(getRowsNotice);
         } else if (req.body.msgType === eApiMessageType.USER_GET_LIST_NOTICE_REQ) {
-            const getRowNotice = await Notice.findAll({
+            const getRowsNotice = await Notice.findAll({
                 where: { isApproved: 'Y' },
                 order: [['noticeId', 'DESC']],
                 offset: 10 * (req.body.data.page - 1),
                 limit: 10 
             });
-            
-            res.status(200).send(getRowNotice);
+            console.log('getRowsNotice: ', getRowsNotice);
+            res.status(200).send(getRowsNotice);
         } else if (req.body.msgType === eApiMessageType.USER_GET_LIST_NOTICE_BY_SEARCHWORD_REQ) {
             const searchWord = req.body.data.searchWord
             const searchKeyword = req.body.data.searchKeyword
 
             if (searchKeyword === 'title') {
-                const getRowNotice = await Notice.findAll({
+                const getRowsNotice = await Notice.findAll({
                     where: { isApproved: 'Y', title: {[Op.like]:'%' + searchWord + '%'} },
                     order: [['noticeId', 'DESC']],
                     offset: 10 * (req.body.data.page - 1),
                     limit: 10 
                 });
-                
-                res.status(200).jssendon(getRowNotice);
+                console.log('getRowsNotice: ', getRowsNotice);
+                res.status(200).jssendon(getRowsNotice);
             } else if (searchKeyword === 'content') {
-                const getRowNotice = await Notice.findAll({
+                const getRowsNotice = await Notice.findAll({
                     where: { isApproved: 'Y', content: {[Op.like]:'%' + searchWord + '%'} },
                     order: [['noticeId', 'DESC']],
                     offset: 10 * (req.body.data.page - 1),
                     limit: 10 
                 });
+
+                console.log('getRowsNotice: ', getRowsNotice);
                 
-                res.status(200).send(getRowNotice);
+                res.status(200).send(getRowsNotice);
             } else {
                 res.status(200).send({ status: "BadRequest", errCode: 400, message: "Bad Request"});
             }
 
             
         } else if (req.body.msgType === eApiMessageType.USER_GET_ONE_NOTICE_REQ) {
-            const getRowNotice = await Notice.findOne({
+            const getRowsNotice = await Notice.findAll({
                 where: { noticeId: req.body.data.noticeIds } 
             });
-            
-            res.status(200).json(getRowNotice);
+            console.log('getRowsNotice: ', getRowsNotice);
+            res.status(200).json(getRowsNotice);
         } else if (req.body.msgType === eApiMessageType.ADMIN_CREATE_NOTICE_REQ) {
             const getRowUser = await User.findOne({
                 attributes: ['accessLevel'],
                 where: { userId: userIdFromReq } 
             });
 
-            console.log('getRowUser', getRowUser[0].dataValues.accessLevel)
-            const userAccessLevel = getRowUser[0].dataValues.accessLevel;
+            console.log('getRowUser', getRowUser);
+            const userAccessLevel = getRowUser.dataValues.accessLevel;
 
             if (userAccessLevel < eAccessLevel.SERVICE_OPERATOR) {
                 res.status(200).send({ status: "Forbidden", errCode: 403, message: "Incorect accessLevel"});
@@ -179,8 +181,8 @@ router.post('/', isLoggedIn, async (req, res, next) => {
                 where: { userId: userIdFromReq } 
             });
 
-            console.log('getRowUser', getRowUser[0].dataValues.accessLevel)
-            const userAccessLevel = getRowUser[0].dataValues.accessLevel;
+            console.log('getRowUser', getRowUser.dataValues.accessLevel)
+            const userAccessLevel = getRowUser.dataValues.accessLevel;
 
             if (userAccessLevel < eAccessLevel.SERVICE_OPERATOR) {
                 res.status(200).send({ status: "Forbidden", errCode: 403, message: "Incorect accessLevel"});
