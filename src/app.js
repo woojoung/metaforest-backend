@@ -59,8 +59,8 @@ app.use(session({
         httpOnly: true, // 항상 true(자바스크립트로 진입 불가)
         secure: false,
         maxAge: 60 * 60 * 24,
-        rolling: true
     },
+    rolling: true
 }));
 
 // 초기화
