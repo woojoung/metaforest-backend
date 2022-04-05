@@ -1,12 +1,9 @@
 const express = require('express');
-const { User, Admin } = require('../db/models');
-// const { eAccessLevel } = require('../enums/accessLevel')
-
+const { User } = require('../db/models');
 const passport = require('passport');
 
 const router = express.Router();
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
-const { smtpTransport } = require('../config/email');
 
 const eAccessLevel = {
     NONE : 0,
@@ -87,11 +84,6 @@ const eApiMessageType = {
 
 }
 
-const generateRandom = function(min, max) {
-    let randomNum = Math.floor(Math.random() * (max - min + 1)) + min;
-    return randomNum.toString()
-}
-
 // GET /
 router.get('/', (req, res) => {
     res.send('OK');
@@ -101,61 +93,27 @@ router.get('/', (req, res) => {
 // POST /signup
 router.post('/signup', isNotLoggedIn, async (req, res, next) => { // POST /signup/
     try {
-        if (req.body.msgType === eApiMessageType.USER_SIGNUP_AUTHCODE_REQ) {
-            const sendEmail = req.body.data.email
-            const authCode = generateRandom(11111, 99999);
+        if (req.body.msgType === eApiMessageType.ADMIN_CREATE_ADMIN_REQ) {
 
-            const mailOptions = {
-                from: `metaforest <${process.env.USER_EMAIL}>`,
-                to: sendEmail,
-                subject: "authCode",
-                text: "authCode : " + authCode
-            }
-
-            smtpTransport.sendMail(mailOptions, (error, info) => {
-                if (error) {
-                    // console.log(error);
-                    return res.status(200).send({ status: "Internal Server Error", errCode: 500, message: "failed to send email" });
-                } else {
-                    // console.log(info.response);
-                    return res.status(200).send({ status: "OK", errCode: 200, message: "success to send email", authCode: authCode });
-                }
-
-            });
-            
-        } else if (req.body.msgType === eApiMessageType.USER_SIGNUP_REQ) {
             const exEmail = await User.findOne({ // 이메일 검사
                 where: {
                     email: req.body.data.email,
                 }
             });
-            const exNickname = await User.findOne({ // 이름 검사
-                where: {
-                    userNickname: req.body.data.userNickname,
-                }
-            });
+
             if (exEmail) {
                 // return으로 res(응답)을 한번만 보내도록 한다. 응답 후 router 종료된다.
                 return res.status(200).send({ status: "Internal Server Error", errCode: 500, message: "used email"});
             }
-            if (exNickname) {
-                return res.status(200).send({ status: "Internal Server Error", errCode: 500, message: "used nickname"});
-            }
     
-            // User 테이블에 생성하기
+            // User 테이블에 admin 생성하기
             await User.create({
-                userNickname: req.body.data.userNickname,
-                profileImageUrl: req.body.data.profileImageUrl,
-                accountId: req.body.data.accountId,
-                password: req.body.data.password,
                 email: req.body.data.email,
-                gender: req.body.data.gender,
-                birth: req.body.data.birth,
-                md5Mobile: req.body.data.md5Mobile,
-                accessLevel: eAccessLevel.USER,
+                password: req.body.data.password,
+                accessLevel: eAccessLevel.SERVICE_ADMIN,
             });
-            // 요청에 대한 성공으로 status(201) : 생성이 됐다는 의미 (기재하는게 좋다.)
-            res.status(201).send({ status: "OK", errCode: 200, message: "success to create user"});
+            
+            res.status(201).send({ status: "OK", errCode: 200, message: "success to create admin"});
         }
         
     } catch(err) {
@@ -179,13 +137,13 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
         }
         // req.login하면 serializeUser 실행
         // 아래는 passport에서 serializeUser 통과 후  if문부터 실행
-        return req.login(user, async (loginErr) => {
+        return req.logIn(user, async (loginErr) => {
             if (loginErr) {
                 console.error(loginErr);
                 return next(loginErr);
             }
             // 비밀번호를 제외한 모든 정보 가져오기
-            const fullUserWithoutPassword = await User.findOne({
+            const fullAdminWithoutPassword = await User.findOne({
                 where: { email: user.email },
                 attributes: {
                     exclude: ['password'], // exclude: 제외한 나머지 정보 가져오기
@@ -200,26 +158,17 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
                 }
               })
             // 세션쿠키와 json 데이터를 브라우저로 보내준다.
-            return res.status(200).send(fullUserWithoutPassword);
+            return res.status(200).send(fullAdminWithoutPassword);
         });
     })(req, res, next);
 });
 
 // 로그아웃
-// POST /logout/
+// POST /admin/logout/
 router.post('/logout', isLoggedIn, (req, res) => {
     req.logOut();
     req.session.destroy();
     res.send('로그아웃');
 });
-
-// 카카오 개발 앱 설정 중 Redirect URI에 적는 주소
-// GET /ouath
-// 카카오 로그인 페이지에서 로그인 후 아래에서 카카오 Strategy가 실행되며, kakao.js 모듈 실행
-// router.get('/ouath', passport.authenticate('kakao', {
-//     failureRedirect: '/',
-// }), (req, res) => {
-//     res.redirect('http://localhost:3000');
-// });
 
 module.exports = router;

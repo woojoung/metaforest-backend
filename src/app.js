@@ -44,7 +44,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // CORS 미들웨어 등록
 app.use(cors({
-    origin: ['http://localhost:5500','http://127.0.0.1:5500','https://metaforest.us'], // '*' 모든 URL에서 접근 가능 / 단 아래 속성 true일 경우는 주소로 적어야한다.(보안강화)
+    origin: ['http://localhost:5500','http://127.0.0.1:5500','https://metaforest.us', 'http://localhost:7074'], // '*' 모든 URL에서 접근 가능 / 단 아래 속성 true일 경우는 주소로 적어야한다.(보안강화)
     credentials: true, // front, back 간 쿠키 공유
 }));
 
