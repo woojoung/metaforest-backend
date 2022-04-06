@@ -1,4 +1,4 @@
-const eApiMessageType = {
+export const eApiMessageType = {
     NONE : 0,
 
     // SERVER_TEST

@@ -1,4 +1,4 @@
-const eFaqCategory = {
+export const eFaqCategory = {
     NONE : 0,
     ONE_TO_ONE : 10,
     GROUP : 20,
