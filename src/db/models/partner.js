@@ -22,6 +22,12 @@ module.exports = class Partner extends Sequelize.Model {
                 defaultValue: '',
                 comment: '기관 코드'
             },
+            plan: {
+                type: Sequelize.INTEGER(11),
+                allowNull: false,
+                defaultValue: '0',
+                comment: '플랜'
+            },
             isApproved: {
                 type: Sequelize.STRING(1),
                 allowNull: false,
