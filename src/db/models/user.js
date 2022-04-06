@@ -64,6 +64,12 @@ module.exports = class User extends Sequelize.Model {
                 defaultValue: '-1',
                 comment: '개인정보 동의'
             },
+            partnerId: {
+                type: Sequelize.INTEGER(20),
+                allowNull: false,
+                defaultValue: '0',
+                comment: '기관 번호'
+            },
             accessLevel: {
                 type: Sequelize.INTEGER(11),
                 allowNull: false,
