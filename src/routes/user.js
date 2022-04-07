@@ -108,16 +108,19 @@ router.post('/', isLoggedIn, async (req, res, next) => {
         console.log(req.body.msgType)
         if (req.body.msgType === eApiMessageType.USER_GET_LIST_REQ) {
             const getRowsUser = await User.findAll({
-                order: [['userId', 'DESC']]
+                where: { [Op.or]: {[Op.like]: req.body.data.conditions } },
+                order: [['userId', 'DESC']],
+                offset: req.body.data.offset,
+                limit: req.body.data.limit
             });
             
-            res.status(200).send(getRowsUser);
+            res.status(200).send({ status: 200, message: "success to get list user", data: {rows: getRowsUser}});
         } else if (req.body.msgType === eApiMessageType.USER_GET_ONE_INFO_REQ) {
             const getRowUser = await User.findOne({
                 where: { userId: req.body.data.userId } 
             });
             console.log(getRowUser)
-            res.status(200).send(getRowUser);
+            res.status(200).send({ status: 200, message: "success to get user info", data: {rows: getRowUser}});
         } else if (req.body.msgType === eApiMessageType.USER_UPDATE_REQ) {
             await User.update({
                 userNickname: req.body.data.userNickname,
@@ -131,7 +134,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
                 accessLevel: req.body.data.accessLevel
             }, {where: { userId: req.body.data.userId }});
             
-            res.status(200).send('');
+            res.status(200).send({ status: 200, message: "success to update user info", data: {rows: getRowUser}});
         } else if (req.body.msgType === eApiMessageType.USER_FIND_ACCOUNT_ID_REQ) {
             const getRowUser = await User.findOne({
                 where: { userNickname: req.body.data.userNickname, email: req.body.data.email  } 
@@ -149,13 +152,13 @@ router.post('/', isLoggedIn, async (req, res, next) => {
 
             smtpTransport.sendMail(mailOptions, (error, response) => {
                 if (error) {
-                    return res.status(200).send({ status: "Internal Server Error", errCode: 500, message: "failed to send email"})
+                    return res.status(200).send({ status: 500, message: "failed to send email"})
                 } else {
-                    return res.status(200).send({ status: "OK", errCode: 200, message: "success to send email"})
+                    return res.status(200).send({ status: 200, message: "success to send email"})
                 }
                 
             });
-            res.status(200).send({ status: "OK", errCode: 200, message: "success to send email"});
+            res.status(200).send({ status: 200, message: "success to send email"});
         } else {
             res.status(200).send(null);
         }
