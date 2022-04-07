@@ -104,13 +104,13 @@ router.post('/', isLoggedIn, async (req, res, next) => {
             });
             
             res.status(200).json(getRowFaq);
-        } else if (req.body.msgType === eApiMessageType.ADMIN_GET_ONE_FAQ_REQ) {
+        } else if (req.body.msgType === eApiMessageType.USER_GET_ONE_FAQ_REQ) {
             const getRowFaq = await Faq.findOne({
                 where: { userId: req.body.data.faqId } 
             });
             
             res.status(200).json(getRowFaq);
-        } else if (req.body.msgType === eApiMessageType.ADMIN_CREATE_FAQ_REQ) {
+        } else if (req.body.msgType === eApiMessageType.USER_CREATE_FAQ_REQ) {
             const getRowUser = await User.findOne({
                 attributes: ['accessLevel'],
                 where: { userId: userIdFromReq } 
@@ -133,7 +133,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
             });
             
             res.status(200).json(insertIdFaq);
-        } else if (req.body.msgType === eApiMessageType.ADMIN_UPDATE_FAQ_REQ) {
+        } else if (req.body.msgType === eApiMessageType.USER_UPDATE_FAQ_REQ) {
             const getRowUser = await User.findOne({
                 attributes: ['accessLevel'],
                 where: { userId: userIdFromReq } 

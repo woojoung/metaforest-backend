@@ -130,7 +130,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
             });
             console.log('getRowsNotice: ', getRowsNotice);
             res.status(200).json(getRowsNotice);
-        } else if (req.body.msgType === eApiMessageType.ADMIN_CREATE_NOTICE_REQ) {
+        } else if (req.body.msgType === eApiMessageType.USER_CREATE_NOTICE_REQ) {
             const getRowUser = await User.findOne({
                 attributes: ['accessLevel'],
                 where: { userId: userIdFromReq } 
@@ -149,14 +149,14 @@ router.post('/', isLoggedIn, async (req, res, next) => {
             });
             
             res.status(200).json(insertIdNotice);
-        } else if (req.body.msgType === eApiMessageType.ADMIN_UPDATE_NOTICE_REQ) {
+        } else if (req.body.msgType === eApiMessageType.USER_UPDATE_NOTICE_REQ) {
             await Notice.update({
                 title: req.body.data.title,
                 content: req.body.data.content,
             }, {where: { noticeId: req.body.data.noticeId }});
             
             res.status(200).json();
-        } else if (req.body.msgType === eApiMessageType.ADMIN_DELETE_NOTICE_REQ) {
+        } else if (req.body.msgType === eApiMessageType.USER_DELETE_NOTICE_REQ) {
             const getRowUser = await User.findOne({
                 attributes: ['accessLevel'],
                 where: { userId: userIdFromReq } 

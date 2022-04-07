@@ -133,7 +133,7 @@ router.post('/signup', isNotLoggedIn, async (req, res, next) => { // POST /signu
                 gender: req.body.data.gender,
                 birth: req.body.data.birth,
                 md5Mobile: req.body.data.md5Mobile,
-                accessLevel: eAccessLevel.USER,
+                accessLevel: req.body.data.accessLevel,
             });
             // 요청에 대한 성공으로 status(201) : 생성이 됐다는 의미 (기재하는게 좋다.)
             res.status(201).send({ status: "OK", errCode: 200, message: "success to create user"});
