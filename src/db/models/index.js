@@ -1,8 +1,8 @@
 const Sequelize = require('sequelize');
 const User = require('./user');
-const Admin = require('./admin');
-const Inquiry = require('./inquiry');
-const Event = require('./event');
+// const Admin = require('./admin');
+// const Inquiry = require('./inquiry');
+// const Event = require('./event');
 const Notice = require('./notice');
 const Faq = require('./faq');
 
