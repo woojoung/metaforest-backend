@@ -28,6 +28,18 @@ module.exports = class Partner extends Sequelize.Model {
                 defaultValue: '0',
                 comment: '플랜'
             },
+            planStartTime: {
+                type: Sequelize.DATE,
+                allowNull: false,
+                defaultValue: '1970-01-01 00:00:00',
+                comment: '플랜 시작일자'
+            },
+            planExpiryTime: {
+                type: Sequelize.DATE,
+                allowNull: false,
+                defaultValue: '1970-01-01 00:00:00',
+                comment: '플랜 종료일자'
+            },
             isApproved: {
                 type: Sequelize.STRING(1),
                 allowNull: false,

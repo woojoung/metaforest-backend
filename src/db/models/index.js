@@ -5,6 +5,7 @@ const User = require('./user');
 // const Event = require('./event');
 const Notice = require('./notice');
 const Faq = require('./faq');
+const Partner = require('./partner')
 
 const env = process.env.NODE_ENV || 'development';
 const config = require('../config/config')[env];
@@ -23,6 +24,7 @@ db.User = User;
 // db.Event = Event;
 db.Notice = Notice;
 db.Faq = Faq;
+db.Partner = Partner;
 
 User.init(sequelize);
 // Admin.init(sequelize);
@@ -30,5 +32,6 @@ User.init(sequelize);
 // Event.init(sequelize);
 Notice.init(sequelize);
 Faq.init(sequelize);
+Partner.init(sequelize);
 
 module.exports = db;
