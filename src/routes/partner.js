@@ -126,24 +126,25 @@ router.post('/', isLoggedIn, async (req, res, next) => {
             }
 
             await Partner.destroy({
-                where: { noticeId: req.body.data.partnerIds } 
+                where: { partnerId: req.body.data.partnerId } 
             });
             
             res.status(200).send();
         } else if (req.body.msgType === eApiMessageType.USER_GET_ONE_PARTNER_REQ) {
             const getRowsPartner = await Partner.findAll({
-                where: { partnerId: req.body.data.partnerIds } 
+                where: { partnerId: req.body.data.partnerId } 
             });
             console.log('getRowsPartner: ', getRowsPartner);
             res.status(200).json(getRowsPartner);
         } else if (req.body.msgType === eApiMessageType.USER_GET_LIST_PARTNER_REQ) {
             const getRowsPartner = await Partner.findAll({
+                where: { [Op.or]: {[Op.like]: req.body.data.conditions } },
                 order: [['partnerId', 'DESC']],
-                offset: 10 * (req.body.data.page - 1),
-                limit: 10 
+                offset: req.body.data.offset,
+                limit: req.body.data.limit
             });
             console.log('getRowsPartner: ', getRowsPartner);
-            res.status(200).send(getRowsPartner);
+            res.status(200).send({ status: 200, message: "success to get list partner", data: {rows: getRowsPartner}});
         } else {
             res.status(200).send(null);
         }
