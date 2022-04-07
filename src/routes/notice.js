@@ -128,7 +128,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
                 
                 res.status(200).send(getRowsNotice);
             } else {
-                res.status(200).send({ status: "BadRequest", errCode: 400, message: "Bad Request"});
+                res.status(200).send({ status: 400, message: "Bad Request"});
             }
 
             
@@ -148,7 +148,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
             const userAccessLevel = getRowUser.dataValues.accessLevel;
 
             if (userAccessLevel < eAccessLevel.SERVICE_OPERATOR) {
-                res.status(200).send({ status: "Forbidden", errCode: 403, message: "Incorect accessLevel"});
+                res.status(200).send({ status: 403, message: "Incorect accessLevel"});
             }
 
             const insertIdNotice = await Notice.create({
@@ -174,7 +174,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
             const userAccessLevel = getRowUser.dataValues.accessLevel;
 
             if (userAccessLevel < eAccessLevel.SERVICE_OPERATOR) {
-                res.status(200).send({ status: "Forbidden", errCode: 403, message: "Incorect accessLevel"});
+                res.status(200).send({ status: 403, message: "Incorect accessLevel"});
             }
 
             await Notice.destroy({
