@@ -1,4 +1,19 @@
-export const eApiMessageType = {
+const express = require('express');
+const router = express.Router();
+const { User } = require('../db/models');
+const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
+
+const eAccessLevel = {
+    NONE : 0,
+    USER : 10,
+    COUNSELOR : 20,
+    SERVICE_OPERATOR : 30,
+    SERVICE_ADMIN : 40,
+    SYSTEM_OPERATOR : 50,
+    SYSTEM_ADMIN : 60,
+}
+
+const eApiMessageType = {
     NONE : 0,
 
     // SERVER_TEST
@@ -55,3 +70,35 @@ export const eApiMessageType = {
     USER_GET_COUNT_PARTNER_REQ : 15006,
 
 }
+
+// GET /
+router.get('', (req, res) => {
+    res.send('OK');
+});
+
+// POST /partner
+router.post('/', isLoggedIn, async (req, res, next) => {
+    try {
+        
+    } catch(error) {
+        console.error(error);
+        next(error);
+    }
+});
+
+/*
+#1 매개변수 라우터 진행 시
+router.get('/:id', (req, res) => {
+    // params에서 매개변수를 확인 가능하다.
+    console.log(req.params.id)
+});
+
+#2 쿼리스트링 라우터 진행 시
+router.get('/:id?limit=5&skip=10', (req, res) => {
+    // query에서 확인 가능하다.
+    console.log(req.query.limit) - 5
+    console.log(req.query.skip) - 10
+});
+*/
+
+module.exports = router;
