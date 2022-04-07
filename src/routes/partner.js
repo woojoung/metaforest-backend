@@ -68,6 +68,7 @@ const eApiMessageType = {
     USER_GET_ONE_PARTNER_REQ : 15004,
     USER_GET_LIST_PARTNER_REQ : 15005,
     USER_GET_COUNT_PARTNER_REQ : 15006,
+    USER_VERIFY_PARTNER_CODE_REQ : 15007,
 
 }
 
@@ -77,7 +78,35 @@ router.get('', (req, res) => {
 });
 
 // POST /partner
+router.post('/verify', isNotLoggedIn, async (req, res, next) => {
+    try {
+        if (req.body.msgType === eApiMessageType.USER_VERIFY_PARTNER_CODE_REQ) {
+            const getRowsPartner = await Partner.findOne({
+                attributes: ['code'],
+                where: { partnerId: req.body.data.partnerId } 
+                
+            });
+            console.log('getRowsPartner: ', getRowsPartner);
+            
+            const codeFromDatabase = getRowsPartner.dataValues.code;
+            const codeFromRequest = req.body.data.partnerCode;
+
+            if (codeFromRequest !== codeFromDatabase) {
+                res.status(200).send({ status: 400, message: "bad request", data: {}});
+            }
+            res.status(200).send({ status: 200, message: "success to get list partner", data: {}});
+        } else {
+            res.status(200).send(null);
+        }
+    } catch(error) {
+        console.error(error);
+        next(error);
+    }
+});
+
+// POST /partner
 router.post('/', isLoggedIn, async (req, res, next) => {
+    let userIdFromReq = req.user.dataValues.userId;
     try {
         if (req.body.msgType === eApiMessageType.USER_CREATE_PARTNER_REQ) {
             const getRowUser = await User.findOne({
