@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { User } = require('../db/models');
+const { User, Partner } = require('../db/models');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 
 const eAccessLevel = {
@@ -79,7 +79,74 @@ router.get('', (req, res) => {
 // POST /partner
 router.post('/', isLoggedIn, async (req, res, next) => {
     try {
-        
+        if (req.body.msgType === eApiMessageType.USER_CREATE_PARTNER_REQ) {
+            const getRowUser = await User.findOne({
+                attributes: ['accessLevel'],
+                where: { userId: userIdFromReq } 
+            });
+
+            console.log('getRowUser', getRowUser);
+            const userAccessLevel = getRowUser.dataValues.accessLevel;
+
+            if (userAccessLevel < eAccessLevel.SERVICE_OPERATOR) {
+                res.status(200).send({ status: "Forbidden", errCode: 403, message: "Incorect accessLevel"});
+            }
+
+            const insertIdPartner = await Partner.create({
+                partnerNickname: req.body.data.partnerNickname,
+                code: req.body.data.code,
+                plan: req.body.data.plan,
+                planStartTime: req.body.data.planStartTime,
+                planExpiryTime: req.body.data.planExpiryTime
+            });
+            
+            res.status(200).json(insertIdPartner);
+        } else if (req.body.msgType === eApiMessageType.USER_UPDATE_PARTNER_REQ) {
+            await Partner.update({
+                partnerNickname: req.body.data.partnerNickname,
+                code: req.body.data.code,
+                plan: req.body.data.plan,
+                planStartTime: req.body.data.planStartTime,
+                planExpiryTime: req.body.data.planExpiryTime,
+                isApproved: req.body.data.isApproved
+            }, {where: { partnerId: req.body.data.partnerId }});
+            
+            res.status(200).json();
+        } else if (req.body.msgType === eApiMessageType.USER_DELETE_PARTNER_REQ) {
+            const getRowUser = await User.findOne({
+                attributes: ['accessLevel'],
+                where: { userId: userIdFromReq } 
+            });
+
+            console.log('getRowUser', getRowUser.dataValues.accessLevel)
+            const userAccessLevel = getRowUser.dataValues.accessLevel;
+
+            if (userAccessLevel < eAccessLevel.SERVICE_OPERATOR) {
+                res.status(200).send({ status: "Forbidden", errCode: 403, message: "Incorect accessLevel"});
+            }
+
+            await Partner.destroy({
+                where: { noticeId: req.body.data.partnerIds } 
+            });
+            
+            res.status(200).send();
+        } else if (req.body.msgType === eApiMessageType.USER_GET_ONE_PARTNER_REQ) {
+            const getRowsPartner = await Partner.findAll({
+                where: { partnerId: req.body.data.partnerIds } 
+            });
+            console.log('getRowsPartner: ', getRowsPartner);
+            res.status(200).json(getRowsPartner);
+        } else if (req.body.msgType === eApiMessageType.USER_GET_LIST_PARTNER_REQ) {
+            const getRowsPartner = await Partner.findAll({
+                order: [['partnerId', 'DESC']],
+                offset: 10 * (req.body.data.page - 1),
+                limit: 10 
+            });
+            console.log('getRowsPartner: ', getRowsPartner);
+            res.status(200).send(getRowsPartner);
+        } else {
+            res.status(200).send(null);
+        }
     } catch(error) {
         console.error(error);
         next(error);
