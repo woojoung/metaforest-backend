@@ -131,7 +131,10 @@ router.post('/', isLoggedIn, async (req, res, next) => {
                 gender: req.body.data.gender,
                 birth: req.body.data.birth,
                 md5Mobile: req.body.data.md5Mobile,
-                accessLevel: req.body.data.accessLevel
+                marketingAgreeTime: req.body.data.marketingAgreeTime,
+                partnerId: req.body.data.partnerId,
+                accessLevel: req.body.data.accessLevel,
+                updatedAt: req.body.data.updatedAt
             }, {where: { userId: req.body.data.userId }});
             
             res.status(200).send({ status: 200, message: "success to update user info", data: {rows: getRowUser}});
