@@ -189,7 +189,7 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
                 }
               })
             // 세션쿠키와 json 데이터를 브라우저로 보내준다.
-            return res.status(200).send(fullUserWithoutPassword);
+            return res.status(200).send({ status: 200, errCode: 200, message: "OK", data: fullUserWithoutPassword});
         });
     })(req, res, next);
 });
@@ -199,7 +199,7 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
 router.post('/logout', isLoggedIn, (req, res) => {
     req.logOut();
     req.session.destroy();
-    res.send('로그아웃');
+    res.status(200).send({ status: 200, errCode: 200, message: "Logout"});
 });
 
 // 카카오 개발 앱 설정 중 Redirect URI에 적는 주소
