@@ -180,14 +180,14 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
                     exclude: ['password'], // exclude: 제외한 나머지 정보 가져오기
                 }
             });
-            req.session.save((err) => {
-                if (err) {
-                  console.error(err)
-                  next(err)
-                } else {
-                  res.redirect(`/`)
-                }
-              })
+            // req.session.save((err) => {
+            //     if (err) {
+            //       console.error(err)
+            //       next(err)
+            //     } else {
+            //       res.redirect(`/`)
+            //     }
+            //   })
             // 세션쿠키와 json 데이터를 브라우저로 보내준다.
             return res.status(200).send({ status: 200, errCode: 200, message: "OK", data: fullUserWithoutPassword});
         });
