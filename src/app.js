@@ -9,7 +9,7 @@ const passportConfig = require('./passport/index');
 const passport = require('passport');
 
 // load database
-// const { sequelize } = require('./db/models/index');
+const { sequelize } = require('./db/models/index');
 
 // load router
 const userRouter = require('./routes/user');
@@ -22,13 +22,13 @@ dotenv.config();
 const app = express();
 
 // connect database
-// sequelize.sync({ force: false })
-//     .then(() => {
-//         console.log('database connection is successful');
-//     })
-//     .catch((err) => {
-//         console.error(err);
-//     })
+sequelize.sync({ force: false })
+    .then(() => {
+        console.log('database connection is successful');
+    })
+    .catch((err) => {
+        console.error(err);
+    })
 
 passportConfig(); // passport 내부 js 모듈 실행
 app.set('port', process.env.PORT || 7071);
@@ -44,7 +44,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // CORS 미들웨어 등록
 app.use(cors({
-    origin: ['http://localhost:5500','http://127.0.0.1:5500','https://metaforest.us', 'http://localhost:7074', 'http://127.0.0.1:7074'], // '*' 모든 URL에서 접근 가능 / 단 아래 속성 true일 경우는 주소로 적어야한다.(보안강화)
+    origin: ['http://localhost:5500','http://127.0.0.1:5500','https://metaforest.us', 'http://localhost:7074', 'http://127.0.0.1:7074', 'http://adminmetaforest.s3-website.ap-northeast-2.amazonaws.com'], // '*' 모든 URL에서 접근 가능 / 단 아래 속성 true일 경우는 주소로 적어야한다.(보안강화)
     credentials: true, // front, back 간 쿠키 공유
 }));
 
