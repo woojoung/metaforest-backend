@@ -9,7 +9,7 @@ const passportConfig = require('./passport/index');
 const passport = require('passport');
 
 // load database
-const { sequelize } = require('./db/models/index');
+// const { sequelize } = require('./db/models/index');
 
 // load router
 const userRouter = require('./routes/user');
@@ -22,13 +22,13 @@ dotenv.config();
 const app = express();
 
 // connect database
-sequelize.sync({ force: false })
-    .then(() => {
-        console.log('database connection is successful');
-    })
-    .catch((err) => {
-        console.error(err);
-    })
+// sequelize.sync({ force: false })
+//     .then(() => {
+//         console.log('database connection is successful');
+//     })
+//     .catch((err) => {
+//         console.error(err);
+//     })
 
 passportConfig(); // passport 내부 js 모듈 실행
 app.set('port', process.env.PORT || 7071);
