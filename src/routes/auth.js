@@ -125,10 +125,10 @@ router.post('/signup', isNotLoggedIn, async (req, res, next) => { // POST /signu
             });
             if (exEmail) {
                 // return으로 res(응답)을 한번만 보내도록 한다. 응답 후 router 종료된다.
-                return res.status(200).send({ status: "Internal Server Error", errCode: 500, message: "used email"});
+                return res.status(200).send({ status: 500, errCode: 500, message: "used email"});
             }
             if (exNickname) {
-                return res.status(200).send({ status: "Internal Server Error", errCode: 500, message: "used nickname"});
+                return res.status(200).send({ status: 500, errCode: 500, message: "used nickname"});
             }
     
             // User 테이블에 생성하기
@@ -144,7 +144,7 @@ router.post('/signup', isNotLoggedIn, async (req, res, next) => { // POST /signu
                 accessLevel: req.body.data.accessLevel,
             });
             // 요청에 대한 성공으로 status(201) : 생성이 됐다는 의미 (기재하는게 좋다.)
-            res.status(201).send({ status: "OK", errCode: 200, message: "success to create user"});
+            res.status(201).send({ status: 200, errCode: 200, message: "success to create user"});
         }
         
     } catch(err) {
