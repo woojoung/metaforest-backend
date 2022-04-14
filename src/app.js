@@ -97,6 +97,10 @@ app.use('/faq', faqRouter); // /faq
 //     res.status(err.status || 500).send(err.message);
 // });
 
+app.get('', (req, res) => {
+    res.sendFile(__dirname + '/public/index.html')
+});
+
 app.listen(app.get('port'), () => {
     console.log('Listening on port:', app.get('port'));
 });
