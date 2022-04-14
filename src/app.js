@@ -98,7 +98,7 @@ app.use('/faq', faqRouter); // /faq
 // });
 
 app.get('', (req, res) => {
-    res.sendFile(__dirname + '/public/index.html')
+    res.send('<h1>OK</h1>');
 });
 
 app.listen(app.get('port'), () => {
