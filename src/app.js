@@ -16,6 +16,7 @@ const userRouter = require('./routes/user');
 const authRouter = require('./routes/auth');
 const noticeRouter = require('./routes/notice');
 const faqRouter = require('./routes/faq');
+const partnerRouter = require('./routes/partner');
 
 // process.env 의 secret 연결
 dotenv.config();
@@ -84,6 +85,7 @@ app.use('/user', userRouter); // /user
 app.use('/auth', authRouter); // /auth
 app.use('/notice', noticeRouter); // /notice
 app.use('/faq', faqRouter); // /faq
+app.use('/partner', partnerRouter); // /faq
 
 // // 404 처리 미들웨어
 // app.use((req, res, next) => {
