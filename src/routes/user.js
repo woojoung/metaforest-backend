@@ -108,13 +108,17 @@ router.post('/', isLoggedIn, async (req, res, next) => {
     try {
         console.log(req.body.msgType)
         if (req.body.msgType === eApiMessageType.USER_GET_LIST_REQ) {
+            // const getRowsUser = await User.findAll({
+            //     where: { [Op.or]: {[Op.like]: req.body.data.conditions } },
+            //     order: [['userId', 'DESC']],
+            //     offset: req.body.data.offset,
+            //     limit: req.body.data.limit
+            // });
+
             const getRowsUser = await User.findAll({
-                where: { [Op.or]: {[Op.like]: req.body.data.conditions } },
-                order: [['userId', 'DESC']],
-                offset: req.body.data.offset,
-                limit: req.body.data.limit
+                order: [['userId', 'DESC']]
             });
-            
+
             res.status(200).send({ status: 200, message: "success to get list user", data: {rows: getRowsUser}});
         } else if (req.body.msgType === eApiMessageType.USER_GET_ONE_INFO_REQ) {
             const getRowUser = await User.findOne({
