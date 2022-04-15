@@ -33,6 +33,7 @@ const eApiMessageType = {
     USER_SIGNUP_AUTHCODE_REQ : 11010,
     USER_FIND_ACCOUNT_ID_REQ : 11011,
     USER_FIND_PASSWD_REQ : 11012,
+    USER_CREATE_REQ : 11013,
 
 
     // NOTICE : 12
@@ -162,6 +163,15 @@ router.post('/', isLoggedIn, async (req, res, next) => {
                 
             });
             res.status(200).send({ status: 200, message: "success to send email"});
+        } else if (req.body.msgType === eApiMessageType.USER_CREATE_REQ) {
+            // User 테이블에 생성하기
+            await User.create({
+                password: req.body.data.password,
+                email: req.body.data.email,
+                accessLevel: req.body.data.accessLevel,
+            });
+            
+            res.status(200).send({ status: 200, message: "success to create admin", data: {}});
         } else {
             res.status(200).send(null);
         }
