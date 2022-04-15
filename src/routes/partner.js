@@ -160,17 +160,17 @@ router.post('/', isLoggedIn, async (req, res, next) => {
             
             res.status(200).send();
         } else if (req.body.msgType === eApiMessageType.USER_GET_ONE_PARTNER_REQ) {
-            const getRowsPartner = await Partner.findAll({
+            const getRowPartner = await Partner.findOne({
                 where: { partnerId: req.body.data.partnerId } 
             });
-            console.log('getRowsPartner: ', getRowsPartner);
-            res.status(200).json(getRowsPartner);
+            console.log('getRowPartner: ', getRowPartner);
+            if (getRowPartner === null) {
+                res.status(200).send({ status: 404, message: "failed to get partner info", data: {rows: getRowPartner}});
+            }
+            res.status(200).send({ status: 200, message: "success to get partner info", data: {rows: getRowPartner}});
         } else if (req.body.msgType === eApiMessageType.USER_GET_LIST_PARTNER_REQ) {
             const getRowsPartner = await Partner.findAll({
-                where: { [Op.or]: {[Op.like]: req.body.data.conditions } },
                 order: [['partnerId', 'DESC']],
-                offset: req.body.data.offset,
-                limit: req.body.data.limit
             });
             console.log('getRowsPartner: ', getRowsPartner);
             res.status(200).send({ status: 200, message: "success to get list partner", data: {rows: getRowsPartner}});
