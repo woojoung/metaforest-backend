@@ -52,7 +52,7 @@ app.use(cors({
 app.use(cookieParser(process.env.COOKIE_SECRET));
 // session 불러오기 : 요청 시 개인의 저장공간을 만들어준다.
 app.use(session({
-    resave: false, // 세션이 수정되지 않아도 항상 저장할지 확인하는 옵션
+    resave: true, // 세션이 수정되지 않아도 항상 저장할지 확인하는 옵션
     saveUninitialized: true, // 세션이 unInitialized 상태로 미리 만들어서 저장하는지 묻는 옵션
     secret: process.env.COOKIE_SECRET,
     cookie: {
