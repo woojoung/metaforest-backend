@@ -59,7 +59,7 @@ app.use(session({
     cookie: {
         httpOnly: true, // 항상 true(자바스크립트로 진입 불가)
         secure: false,
-        maxAge: 1000 * 60 * 60 * 24, // 24시간 유지
+        maxAge: 1000 * 60 * 60 * 1, // 1시간 유지
     },
     rolling: true
 }));
