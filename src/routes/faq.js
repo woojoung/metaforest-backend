@@ -124,20 +124,20 @@ router.post('/', isLoggedIn, async (req, res, next) => {
                 where: { userId: userIdFromReq } 
             });
 
-            console.log('getRowUser', getRowUser[0].dataValues.accessLevel)
-            const userAccessLevel = getRowUser[0].dataValues.accessLevel;
+            console.log('getRowUser', getRowUser.dataValues.accessLevel)
+            const userAccessLevel = getRowUser.dataValues.accessLevel;
 
             if (userAccessLevel < eAccessLevel.SERVICE_OPERATOR) {
-                res.status(200).json({ status: "Forbidden", errCode: 403, message: "Incorect accessLevel"});
+                return res.status(200).json({ status: "Forbidden", errCode: 403, message: "Incorect accessLevel"});
             }
 
             const insertIdFaq = await Faq.create({
-                ordering: req.body.data.ordering,
+                // ordering: req.body.data.ordering,
                 category: req.body.data.category,
                 title: req.body.data.title,
                 content: req.body.data.content,
-                adminId: req.body.data.adminId,
-                isApproved: req.body.data.isApproved,
+                adminId: userIdFromReq, //userId
+                // isApproved: req.body.data.isApproved,
             });
             
             res.status(200).json(insertIdFaq);
