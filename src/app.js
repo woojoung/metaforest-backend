@@ -21,6 +21,7 @@ const partnerRouter = require('./routes/partner');
 // process.env 의 secret 연결
 dotenv.config();
 const app = express();
+passportConfig(); // passport 내부 js 모듈 실행
 
 // connect database
 sequelize.sync({ force: false })
@@ -31,11 +32,14 @@ sequelize.sync({ force: false })
         console.error(err);
     })
 
-passportConfig(); // passport 내부 js 모듈 실행
+
 app.set('port', process.env.PORT || 7071);
 
-app.use(morgan('dev'));
-
+if (process.env.NODE_ENV === 'production') {
+    app.use(morgan('combined'));
+} else {
+    app.use(morgan('dev'));
+}
 
 // req.body에서 바로 꺼내서 데이터를 확인할 수 있다. (필수 장착)
 // json - 클라이언트에서 받은 데이터를 json으로 보내줄 경우 json으로 파싱해서 req.body로 데이터를 넣어준다.
@@ -61,7 +65,7 @@ app.use(session({
         secure: false,
         maxAge: 1000 * 60 * 60 * 1, // 1시간 유지
     },
-    rolling: true
+    // rolling: true
 }));
 
 // 초기화
