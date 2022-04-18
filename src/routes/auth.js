@@ -164,7 +164,7 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
         }
         if (info) { // 클라이언트 에러 (비밀번호가 틀렸거나, 계정이 없거나), info.message에 에러 내용이 있음.
             
-            res.status(200).send({ status: 500, errCode: 500, message: info.toString()});
+            return res.status(200).send({ status: 500, errCode: 500, message: info.toString()});
         }
         // req.login하면 serializeUser 실행
         // 아래는 passport에서 serializeUser 통과 후  if문부터 실행
