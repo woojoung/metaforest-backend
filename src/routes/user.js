@@ -142,7 +142,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
                 updatedAt: req.body.data.updatedAt
             }, {where: { userId: req.body.data.userId }});
             
-            res.status(200).send({ status: 200, message: "success to update user info", data: {rows: getRowUser}});
+            res.status(200).send({ status: 200, message: "success to update user info", data: {}});
         } else if (req.body.msgType === eApiMessageType.USER_FIND_ACCOUNT_ID_REQ) {
             const getRowUser = await User.findOne({
                 where: { userNickname: req.body.data.userNickname, email: req.body.data.email  } 
