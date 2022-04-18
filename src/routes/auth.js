@@ -185,7 +185,7 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
                   console.error(err)
                   next(err)
                 } else {
-                  res.redirect(`/login`)
+                  res.redirect(`/`)
                 }
               })
             // 세션쿠키와 json 데이터를 브라우저로 보내준다.
