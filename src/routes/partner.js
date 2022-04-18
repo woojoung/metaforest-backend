@@ -151,7 +151,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
             const userAccessLevel = getRowUser.dataValues.accessLevel;
 
             if (userAccessLevel < eAccessLevel.SERVICE_OPERATOR) {
-                res.status(200).send({ status: "Forbidden", errCode: 403, message: "Incorect accessLevel"});
+                return res.status(200).send({ status: 403, errCode: 403, message: "Incorect accessLevel"});
             }
 
             await Partner.destroy({
@@ -165,7 +165,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
             });
             console.log('getRowPartner: ', getRowPartner);
             if (getRowPartner === null) {
-                res.status(200).send({ status: 404, message: "failed to get partner info", data: {rows: getRowPartner}});
+                return res.status(200).send({ status: 404, message: "failed to get partner info", data: {rows: getRowPartner}});
             }
             res.status(200).send({ status: 200, message: "success to get partner info", data: {rows: getRowPartner}});
         } else if (req.body.msgType === eApiMessageType.USER_GET_LIST_PARTNER_REQ) {
