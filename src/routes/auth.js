@@ -199,7 +199,7 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
 router.post('/logout', isLoggedIn, (req, res) => {
     req.logOut();
     req.session.destroy();
-    res.status(200).send({ status: 200, errCode: 200, message: "Logout"});
+    return res.status(200).send({ status: 200, errCode: 200, message: "Logout"});
 });
 
 // 카카오 개발 앱 설정 중 Redirect URI에 적는 주소

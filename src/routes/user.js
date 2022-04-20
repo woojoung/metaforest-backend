@@ -93,7 +93,9 @@ router.get('/', isLoggedIn, async (req, res, next) => {
                     exclude: ['password'], // exclude: 제외한 나머지 정보 가져오기
                 },
             });
-            res.status(200).json(fullUserWithoutPassword);
+            // res.status(200).json(fullUserWithoutPassword);
+            res.status(200).send({status: 200, errCode: 200, message: "OK", data: fullUserWithoutPassword});
+            
         } else {
             res.status(200).json(null);
         }

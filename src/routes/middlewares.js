@@ -1,7 +1,7 @@
 exports.isLoggedIn = (req, res, next) => {
     console.log('isLoggedIn req.isAuthenticated : ', req.isAuthenticated())
     if (req.isAuthenticated()) {
-        next();
+        next(); // 로그인 상태면 다음 미들웨어 호출
     } else {
         // res.status(200).send('eErrCode 403: Login first'); // eErrCode 403
         res.status(200).json({ status: 403, errCode: 403, message: "Login first"}); // eErrCode 403

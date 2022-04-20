@@ -65,7 +65,7 @@ app.use(session({
         secure: false,
         maxAge: 1000 * 60 * 60 * 1, // 1시간 유지
     },
-    // rolling: true
+    rolling: true
 }));
 
 // 초기화
