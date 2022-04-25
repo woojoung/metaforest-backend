@@ -94,10 +94,10 @@ router.get('/', isLoggedIn, async (req, res, next) => {
                 },
             });
             // res.status(200).json(fullUserWithoutPassword);
-            res.status(200).send({status: 200, errCode: 200, message: "OK", data: fullUserWithoutPassword});
+            return res.status(200).send({status: 200, errCode: 200, message: "OK", data: fullUserWithoutPassword});
             
         } else {
-            res.status(200).json(null);
+            return res.status(200).json(null);
         }
     } catch(error) {
         console.error(error);
