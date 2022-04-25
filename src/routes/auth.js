@@ -181,7 +181,8 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
                     exclude: ['password'], // exclude: 제외한 나머지 정보 가져오기
                 }
             });
-            req.session.save(() => res.redirect('/'));
+            req.session.isLoggedIn = true;
+            req.session.save();
             // req.session.save((err) => {
             //     if (err) {
             //       console.error(err)
