@@ -173,6 +173,7 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
                 console.error(loginErr);
                 return next(loginErr);
             }
+
             // 비밀번호를 제외한 모든 정보 가져오기
             const fullUserWithoutPassword = await User.findOne({
                 where: { email: user.email },
