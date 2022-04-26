@@ -8,7 +8,7 @@ const dotenv = require('dotenv');
 const passportConfig = require('./passport/index');
 const passport = require('passport');
 
-const MySQLStore = require('express-mysql-session')(session);
+// const MySQLStore = require('express-mysql-session')(session);
 
 
 // load database
