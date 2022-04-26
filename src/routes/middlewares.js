@@ -1,5 +1,6 @@
 exports.isLoggedIn = (req, res, next) => {
     console.log('isLoggedIn req.isAuthenticated : ', req.isAuthenticated())
+    console.log('isLoggedIn req.user : ', req.user)
     if (req.isAuthenticated()) {
         next(); // 로그인 상태면 다음 미들웨어 호출
     } else {
@@ -10,6 +11,7 @@ exports.isLoggedIn = (req, res, next) => {
 
 exports.isNotLoggedIn = (req, res, next) => {
     console.log('isNotLoggedIn req.isAuthenticated : ', req.isAuthenticated())
+    console.log('isNotLoggedIn req.user : ', req.user)
     if (!req.isAuthenticated()) {
         next();
     } else {
