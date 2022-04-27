@@ -65,6 +65,7 @@ app.use(session({
     secret: process.env.COOKIE_SECRET,
     cookie: {
         httpOnly: true, // 항상 true(자바스크립트로 진입 불가)
+        domain: 'http://adminmetaforest.s3-website.ap-northeast-2.amazonaws.com',
         secure: false,
         maxAge: 1000 * 60 * 60 * 1, // 1시간 유지
     },
