@@ -182,7 +182,6 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
                 }
             });
 
-            req.session.save(() => {res.redirect('/')});
             // req.session.save((err) => {
             //     if (err) {
             //       console.error(err)
