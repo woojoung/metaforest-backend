@@ -11,7 +11,7 @@ module.exports = () => {
     });
 
     passport.deserializeUser( async (userId, done) => {
-        console.log('userId: ',userId)
+        console.log('wooree deserializeUser userId: ',userId)
         try {
             const user = await User.findOne({ where: { userId: userId }});
             done(null, user);
