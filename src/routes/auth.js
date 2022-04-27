@@ -1,7 +1,5 @@
 const express = require('express');
-const { User, Admin } = require('../db/models');
-// const { eAccessLevel } = require('../enums/accessLevel')
-
+const { User } = require('../db/models');
 const passport = require('passport');
 
 const router = express.Router();
@@ -182,14 +180,6 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
                 }
             });
 
-            // req.session.save((err) => {
-            //     if (err) {
-            //       console.error(err)
-            //       next(err)
-            //     } else {
-            //       res.redirect(`/`)
-            //     }
-            //   })
             // 세션쿠키와 json 데이터를 브라우저로 보내준다.
             return res.status(200).send({ status: 200, errCode: 200, message: "OK", data: fullUserWithoutPassword});
         });
