@@ -51,18 +51,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // CORS 미들웨어 등록
-const whiteList = ['http://localhost:5500','http://127.0.0.1:5500','https://metaforest.us', 'http://localhost:7074', 'http://127.0.0.1:7074', 'http://adminmetaforest.s3-website.ap-northeast-2.amazonaws.com'];
-const corsOptions = {
-    origin: whiteList,
-    credentials: true,
+app.use(cors({
+    origin: ['http://localhost:5500','http://127.0.0.1:5500','https://metaforest.us', 'http://localhost:7074', 'http://127.0.0.1:7074', 'http://adminmetaforest.s3-website.ap-northeast-2.amazonaws.com'], // '*' 모든 URL에서 접근 가능 / 단 아래 속성 true일 경우는 주소로 적어야한다.(보안강화)
+    credentials: true, // front, back 간 쿠키 공유
     methods: ['GET', 'POST', 'OPTIONS']
-};
-app.use(cors(corsOptions));
-// app.use(cors({
-//     origin: , // '*' 모든 URL에서 접근 가능 / 단 아래 속성 true일 경우는 주소로 적어야한다.(보안강화)
-//     credentials: true, // front, back 간 쿠키 공유
-//     methods: ['GET', 'POST', 'OPTIONS']
-// }));
+}));
 
 // 로그인 시 아래 4개의 미들웨어 필요
 app.use(cookieParser(process.env.COOKIE_SECRET));
