@@ -69,7 +69,7 @@ app.use(session({
         secure: false,
         maxAge: 1000 * 60 * 60 * 1, // 1시간 유지
         sameSite: 'none',
-        domain: 'amazonaws.com'
+        domain: '.amazonaws.com'
     },
     // rolling: true,
     name: 'meta_sid'
