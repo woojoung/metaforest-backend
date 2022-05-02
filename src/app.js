@@ -64,12 +64,14 @@ app.use(session({
     resave: false, // 세션이 수정되지 않아도 항상 저장할지 확인하는 옵션
     saveUninitialized: true, // 세션이 unInitialized 상태로 미리 만들어서 저장하는지 묻는 옵션
     secret: process.env.COOKIE_SECRET,
+    proxy: true,
     cookie: {
         httpOnly: true, // 항상 true(자바스크립트로 진입 불가)
         secure: false,
         maxAge: 1000 * 60 * 60 * 1, // 1시간 유지
-        sameSite: 'none',
-        domain: '.amazonaws.com'
+        sameSite: 'None',
+        domain: '.amazonaws.com',
+        path: '/'
     },
     // rolling: true,
     name: 'meta_sid'
