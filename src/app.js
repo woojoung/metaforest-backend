@@ -52,10 +52,10 @@ app.use(express.urlencoded({ extended: true }));
 
 // CORS 미들웨어 등록
 app.use(cors({
-    origin: ['http://localhost:5500','http://127.0.0.1:5500','https://metaforest.us', 'http://localhost:7074', 'http://127.0.0.1:7074', 'http://adminmetaforest.s3-website.ap-northeast-2.amazonaws.com'], // '*' 모든 URL에서 접근 가능 / 단 아래 속성 true일 경우는 주소로 적어야한다.(보안강화)
+    origin: ['http://localhost:5500','http://127.0.0.1:5500','https://metaforest.us', 'http://localhost:7074', 'http://127.0.0.1:7074', 'http://adminmetaforest.s3-website.ap-northeast-2.amazonaws.com'],
     // origin: true,
     // allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept, authorization',
-    credentials: true, // front, back 간 쿠키 공유
+    credentials: true,
     methods: ['GET', 'POST', 'OPTIONS']
 }));
 
@@ -63,13 +63,13 @@ app.use(cors({
 app.use(cookieParser(process.env.COOKIE_SECRET));
 // session 불러오기 : 요청 시 개인의 저장공간을 만들어준다.
 app.use(session({
-    resave: false, // 세션이 수정되지 않아도 항상 저장할지 확인하는 옵션
-    saveUninitialized: true, // 세션이 unInitialized 상태로 미리 만들어서 저장하는지 묻는 옵션
+    resave: false,
+    saveUninitialized: true,
     secret: process.env.COOKIE_SECRET,
     cookie: {
-        httpOnly: true, // 항상 true(자바스크립트로 진입 불가)
+        httpOnly: true,
         secure: false,
-        maxAge: 1000 * 60 * 60 * 1, // 1시간 유지
+        maxAge: 1000 * 60 * 60 * 1,
     },
     name: 'meta_sid',
 }));
