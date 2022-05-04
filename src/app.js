@@ -52,7 +52,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // CORS 미들웨어 등록
 app.use(cors({
-    origin: ['http://localhost:5500','http://127.0.0.1:5500','https://metaforest.us', 'http://localhost:7074', 'http://127.0.0.1:7074', 'http://adminmetaforest.s3-website.ap-northeast-2.amazonaws.com'],
+    origin: ['http://localhost:5500','http://127.0.0.1:5500','https://metaforest.us', 'http://localhost:7074', 'http://127.0.0.1:7074', 'https://admin.metaforest.us'],
     // origin: true,
     // allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept, authorization',
     credentials: true,
@@ -68,7 +68,7 @@ app.use(session({
     secret: process.env.COOKIE_SECRET,
     cookie: {
         httpOnly: true,
-        secure: false,
+        secure: true,
         maxAge: 1000 * 60 * 60 * 1,
     },
     name: 'meta_sid',
