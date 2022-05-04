@@ -69,7 +69,7 @@ app.use(session({
     cookie: {
         httpOnly: true,
         secure: true,
-        domain: 'metaforest.us',
+        domain: '.metaforest.us',
         maxAge: 1000 * 60 * 60 * 1,
     },
     name: 'meta_sid',
