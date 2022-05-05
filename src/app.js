@@ -27,13 +27,13 @@ const app = express();
 passportConfig(); // passport 내부 js 모듈 실행
 
 // connect database
-sequelize.sync({ force: false })
-    .then(() => {
-        console.log('database connection is successful');
-    })
-    .catch((err) => {
-        console.error(err);
-    })
+// sequelize.sync({ force: false })
+//     .then(() => {
+//         console.log('database connection is successful');
+//     })
+//     .catch((err) => {
+//         console.error(err);
+//     })
 
 
 app.set('port', process.env.PORT || 7071);
