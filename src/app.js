@@ -68,8 +68,8 @@ app.use(session({
     secret: process.env.COOKIE_SECRET,
     cookie: {
         httpOnly: true,
-        secure: false,
-        // domain: '.metaforest.us',
+        secure: true,
+        domain: '.metaforest.us',
         maxAge: 1000 * 60 * 60 * 1,
     },
     name: 'meta_sid',
