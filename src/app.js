@@ -59,6 +59,8 @@ app.use(cors({
     methods: ['GET', 'POST', 'OPTIONS']
 }));
 
+app.set('trust proxy', 1);
+
 // 로그인 시 아래 4개의 미들웨어 필요
 app.use(cookieParser(process.env.COOKIE_SECRET));
 // session 불러오기 : 요청 시 개인의 저장공간을 만들어준다.
@@ -71,11 +73,10 @@ app.use(session({
         httpOnly: true,
         secure: true,
         maxAge: 1000 * 60 * 60 * 1,
+        sameSite: 'none',
     },
     name: 'meta_sid',
 }));
-
-app.set('trust proxy', 1);
 
 // 초기화
 app.use(passport.initialize());
