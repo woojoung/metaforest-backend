@@ -47,6 +47,7 @@ if (process.env.NODE_ENV === 'production') {
 
 const sessionStore = new MySQLStore({
     host: '127.0.0.1',
+    port: 3306,
     user: 'admin',
     password: process.env.DB_PASSWORD,
     database: 'session_test'
