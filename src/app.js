@@ -80,7 +80,7 @@ app.use(session({
     proxy: true,
     store: sessionStore,
     cookie: {
-        httpOnly: false,
+        httpOnly: true,
         secure: true,
         maxAge: 1000 * 60 * 60 * 1,
         sameSite: 'none',
