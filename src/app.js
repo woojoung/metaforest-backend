@@ -8,8 +8,7 @@ const dotenv = require('dotenv');
 const passportConfig = require('./passport/index');
 const passport = require('passport');
 
-// const MySQLStore = require('express-mysql-session')(session);
-
+const MySQLStore = require('express-mysql-session')(session);
 
 // load database
 const { sequelize } = require('./db/models/index');
@@ -46,6 +45,14 @@ if (process.env.NODE_ENV === 'production') {
     app.use(morgan('dev'));
 }
 
+const sessionStore = new MySQLStore({
+    host: '127.0.0.1',
+    user: 'admin',
+    password: process.env.DB_PASSWORD,
+    database: 'session_test'
+});
+
+
 // req.body에서 바로 꺼내서 데이터를 확인할 수 있다. (필수 장착)
 // json - 클라이언트에서 받은 데이터를 json으로 보내줄 경우 json으로 파싱해서 req.body로 데이터를 넣어준다.
 app.use(express.json());
@@ -70,6 +77,7 @@ app.use(session({
     saveUninitialized: true,
     secret: process.env.COOKIE_SECRET,
     proxy: true,
+    store: sessionStore,
     cookie: {
         httpOnly: true,
         secure: true,
