@@ -38,6 +38,8 @@ sequelize.sync({ force: false })
 
 app.set('port', process.env.PORT || 7071);
 
+app.set('trust proxy', 1);
+
 if (process.env.NODE_ENV === 'production') {
     app.use(morgan('combined'));
 } else {
@@ -59,7 +61,6 @@ app.use(cors({
     methods: ['GET', 'POST', 'OPTIONS']
 }));
 
-app.set('trust proxy', 1);
 
 // 로그인 시 아래 4개의 미들웨어 필요
 app.use(cookieParser(process.env.COOKIE_SECRET));
@@ -74,6 +75,7 @@ app.use(session({
         secure: true,
         maxAge: 1000 * 60 * 60 * 1,
         sameSite: 'none',
+        domain: '.metaforest.us'
     },
     name: 'meta_sid',
 }));
