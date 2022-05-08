@@ -66,6 +66,7 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
     secret: process.env.COOKIE_SECRET,
+    proxy: true,
     cookie: {
         httpOnly: true,
         secure: true,
@@ -74,6 +75,8 @@ app.use(session({
     },
     name: 'meta_sid',
 }));
+
+app.set('trust proxy', 1);
 
 // 초기화
 app.use(passport.initialize());
