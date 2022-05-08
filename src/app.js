@@ -82,7 +82,7 @@ app.use(session({
     cookie: {
         httpOnly: true,
         // secure: true,
-        maxAge: 1000 * 60 * 60 * 1,
+        maxAge: 1000 * 60 * 60 * 5,
         // sameSite: 'none',
         domain: '.metaforest.us'
     },
