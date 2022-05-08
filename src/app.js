@@ -84,7 +84,7 @@ app.use(session({
         // secure: true,
         maxAge: 1000 * 60 * 60 * 1,
         // sameSite: 'none',
-        domain: 'metaforest.us'
+        domain: '.metaforest.us'
     },
     name: 'meta_sid',
 }));
