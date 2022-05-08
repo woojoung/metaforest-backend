@@ -75,7 +75,6 @@ app.use(cookieParser(process.env.COOKIE_SECRET));
 // session 불러오기 : 요청 시 개인의 저장공간을 만들어준다.
 app.use(session({
     resave: false,
-    secure: true,
     saveUninitialized: false,
     secret: process.env.COOKIE_SECRET,
     proxy: true,
@@ -84,7 +83,7 @@ app.use(session({
         httpOnly: true,
         secure: true,
         maxAge: 1000 * 60 * 60 * 1,
-        sameSite: 'none',
+        // sameSite: 'none',
         domain: '.metaforest.us'
     },
     name: 'meta_sid',
