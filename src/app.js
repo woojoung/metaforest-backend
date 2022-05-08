@@ -81,7 +81,7 @@ app.use(session({
     store: sessionStore,
     cookie: {
         httpOnly: true,
-        secure: true,
+        // secure: true,
         maxAge: 1000 * 60 * 60 * 1,
         // sameSite: 'none',
         domain: 'metaforest.us'
