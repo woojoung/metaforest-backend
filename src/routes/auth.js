@@ -180,8 +180,6 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
                 }
             });
 
-            res.session.save();
-
             // 세션쿠키와 json 데이터를 브라우저로 보내준다.
             return res.status(200).send({ status: 200, errCode: 200, message: "OK", data: fullUserWithoutPassword});
         });
