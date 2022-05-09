@@ -1,4 +1,4 @@
-const ePlanType = module.exports = {
+module.exports = {
     NONE : 0,
     BASIC : 10,
     PRO : 20,
