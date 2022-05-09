@@ -1,4 +1,4 @@
-export const eFaqCategory = {
+const eFaqCategory = module.exports = {
     NONE : 0,
     ONE_TO_ONE : 10,
     GROUP : 20,

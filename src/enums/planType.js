@@ -1,4 +1,4 @@
-export const ePlanType = {
+const ePlanType = module.exports = {
     NONE : 0,
     BASIC : 10,
     PRO : 20,

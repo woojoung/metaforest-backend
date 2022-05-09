@@ -1,6 +1,6 @@
 'use strict'
 
-export const eAccessLevel = {
+const eAccessLevel = module.exports = {
     NONE : 0,
     USER : 10,
     COUNSELOR : 20,
@@ -9,5 +9,3 @@ export const eAccessLevel = {
     SYSTEM_OPERATOR : 50,
     SYSTEM_ADMIN : 60,
 }
-
-// module.exports = Object.freeze(eAccessLevel)
