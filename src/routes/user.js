@@ -175,6 +175,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
                 password: req.body.data.password,
                 email: req.body.data.email,
                 accessLevel: req.body.data.accessLevel,
+                createdAt: req.body.data.createdAt
             });
             
             res.status(200).send({ status: 200, message: "success to create admin", data: {}});
