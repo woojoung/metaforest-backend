@@ -88,7 +88,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
             res.status(200).send(getRowsNotice);
         } else if (req.body.msgType === eApiMessageType.USER_GET_LIST_NOTICE_REQ) {
             const getRowsNotice = await Notice.findAll({
-                where: { isApproved: 'Y' },
+                // where: { isApproved: 'Y' },
                 order: [['noticeId', 'DESC']],
                 offset: 10 * (req.body.data.page - 1),
                 limit: 10 
@@ -101,7 +101,8 @@ router.post('/', isLoggedIn, async (req, res, next) => {
 
             if (searchKeyword === 'title') {
                 const getRowsNotice = await Notice.findAll({
-                    where: { isApproved: 'Y', title: {[Op.like]:'%' + searchWord + '%'} },
+                    // where: { isApproved: 'Y', title: {[Op.like]:'%' + searchWord + '%'} },
+                    where: { title: {[Op.like]:'%' + searchWord + '%'} },
                     order: [['noticeId', 'DESC']],
                     offset: 10 * (req.body.data.page - 1),
                     limit: 10 
@@ -110,7 +111,8 @@ router.post('/', isLoggedIn, async (req, res, next) => {
                 res.status(200).jssendon(getRowsNotice);
             } else if (searchKeyword === 'content') {
                 const getRowsNotice = await Notice.findAll({
-                    where: { isApproved: 'Y', content: {[Op.like]:'%' + searchWord + '%'} },
+                    // where: { isApproved: 'Y', content: {[Op.like]:'%' + searchWord + '%'} },
+                    where: { title: {[Op.like]:'%' + searchWord + '%'} },
                     order: [['noticeId', 'DESC']],
                     offset: 10 * (req.body.data.page - 1),
                     limit: 10 
