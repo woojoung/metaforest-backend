@@ -85,7 +85,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
                 order: [['ordering', 'DESC']]
             });
             // console.log('getRowsNotice: ', getRowsNotice);
-            res.status(200).send(getRowsNotice);
+            res.status(200).send({ status: 200, message: "success to get count notice", data: {rows: getRowsNotice}});
         } else if (req.body.msgType === eApiMessageType.USER_GET_LIST_NOTICE_REQ) {
             const getRowsNotice = await Notice.findAll({
                 // where: { isApproved: 'Y' },
@@ -94,7 +94,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
                 limit: 10 
             });
             // console.log('getRowsNotice: ', getRowsNotice);
-            res.status(200).send(getRowsNotice);
+            res.status(200).send({ status: 200, message: "success to get list notice", data: {rows: getRowsNotice}});
         } else if (req.body.msgType === eApiMessageType.USER_GET_LIST_NOTICE_BY_SEARCHWORD_REQ) {
             const searchWord = req.body.data.searchWord
             const searchKeyword = req.body.data.searchKeyword
@@ -108,7 +108,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
                     limit: 10 
                 });
                 // console.log('getRowsNotice: ', getRowsNotice);
-                res.status(200).jssendon(getRowsNotice);
+                res.status(200).send({ status: 200, message: "success to get list notice by search keyword title", data: {rows: getRowsNotice}});
             } else if (searchKeyword === 'content') {
                 const getRowsNotice = await Notice.findAll({
                     // where: { isApproved: 'Y', content: {[Op.like]:'%' + searchWord + '%'} },
@@ -120,7 +120,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
 
                 // console.log('getRowsNotice: ', getRowsNotice);
                 
-                res.status(200).send(getRowsNotice);
+                res.status(200).send({ status: 200, message: "success to get list notice by search keyword content", data: {rows: getRowsNotice}});
             } else {
                 res.status(200).send({ status: 400, message: "Bad Request"});
             }
@@ -131,7 +131,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
                 where: { noticeId: req.body.data.noticeIds } 
             });
             // console.log('getRowsNotice: ', getRowsNotice);
-            res.status(200).json(getRowsNotice);
+            res.status(200).send({ status: 200, message: "success to get one notice", data: {rows: getRowsNotice}});
         } else if (req.body.msgType === eApiMessageType.USER_CREATE_NOTICE_REQ) {
             const getRowUser = await User.findOne({
                 attributes: ['accessLevel'],
@@ -157,7 +157,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
                 content: req.body.data.content,
             }, {where: { noticeId: req.body.data.noticeId }});
             
-            res.status(200).send({ status: 200, message: "success to update notice", data: {updateNotice}});
+            res.status(200).send({ status: 200, message: "success to update notice", data: updateNotice});
         } else if (req.body.msgType === eApiMessageType.USER_DELETE_NOTICE_REQ) {
             const getRowUser = await User.findOne({
                 attributes: ['accessLevel'],
