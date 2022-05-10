@@ -88,7 +88,7 @@ router.post('/verify', isNotLoggedIn, async (req, res, next) => {
                 where: { partnerId: req.body.data.partnerId } 
                 
             });
-            console.log('getRowsPartner: ', getRowsPartner);
+            // console.log('getRowsPartner: ', getRowsPartner);
             
             const codeFromDatabase = getRowsPartner.dataValues.code;
             const codeFromRequest = req.body.data.partnerCode;
@@ -116,7 +116,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
                 where: { userId: userIdFromReq } 
             });
 
-            console.log('getRowUser', getRowUser);
+            // console.log('getRowUser', getRowUser);
             const userAccessLevel = getRowUser.dataValues.accessLevel;
 
             if (userAccessLevel < eAccessLevel.SERVICE_OPERATOR) {
@@ -149,7 +149,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
                 where: { userId: userIdFromReq } 
             });
 
-            console.log('getRowUser', getRowUser.dataValues.accessLevel);
+            // console.log('getRowUser', getRowUser.dataValues.accessLevel);
             const userAccessLevel = getRowUser.dataValues.accessLevel;
 
             if (userAccessLevel < eAccessLevel.SERVICE_OPERATOR) {
@@ -165,7 +165,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
             const getRowPartner = await Partner.findOne({
                 where: { partnerId: req.body.data.partnerId } 
             });
-            console.log('getRowPartner: ', getRowPartner);
+            // console.log('getRowPartner: ', getRowPartner);
             if (getRowPartner === null) {
                 return res.status(200).send({ status: 404, message: "failed to get partner info", data: {rows: getRowPartner}});
             }
@@ -174,7 +174,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
             const getRowsPartner = await Partner.findAll({
                 order: [['partnerId', 'DESC']],
             });
-            console.log('getRowsPartner: ', getRowsPartner);
+            // console.log('getRowsPartner: ', getRowsPartner);
             res.status(200).send({ status: 200, message: "success to get list partner", data: {rows: getRowsPartner}});
         } else {
             res.status(200).send(null);

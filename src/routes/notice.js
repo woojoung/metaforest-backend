@@ -83,8 +83,8 @@ const eApiMessageType = {
 
 // POST /notice
 router.post('/', isLoggedIn, async (req, res, next) => {
-    console.log(req);
-    console.log(req.user.dataValues.userId);
+    // console.log(req);
+    // console.log(req.user.dataValues.userId);
     let userIdFromReq = req.user.dataValues.userId;
     try {
         // login logout을 제외한 나머지 api 작업은 post로 해결. eApiMessageType 으로 분기. req.body.msgType 
@@ -92,7 +92,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
             const getRowsNotice = await Notice.findAll({
                 order: [['ordering', 'DESC']]
             });
-            console.log('getRowsNotice: ', getRowsNotice);
+            // console.log('getRowsNotice: ', getRowsNotice);
             res.status(200).send(getRowsNotice);
         } else if (req.body.msgType === eApiMessageType.USER_GET_LIST_NOTICE_REQ) {
             const getRowsNotice = await Notice.findAll({
@@ -101,7 +101,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
                 offset: 10 * (req.body.data.page - 1),
                 limit: 10 
             });
-            console.log('getRowsNotice: ', getRowsNotice);
+            // console.log('getRowsNotice: ', getRowsNotice);
             res.status(200).send(getRowsNotice);
         } else if (req.body.msgType === eApiMessageType.USER_GET_LIST_NOTICE_BY_SEARCHWORD_REQ) {
             const searchWord = req.body.data.searchWord
@@ -114,7 +114,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
                     offset: 10 * (req.body.data.page - 1),
                     limit: 10 
                 });
-                console.log('getRowsNotice: ', getRowsNotice);
+                // console.log('getRowsNotice: ', getRowsNotice);
                 res.status(200).jssendon(getRowsNotice);
             } else if (searchKeyword === 'content') {
                 const getRowsNotice = await Notice.findAll({
@@ -124,7 +124,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
                     limit: 10 
                 });
 
-                console.log('getRowsNotice: ', getRowsNotice);
+                // console.log('getRowsNotice: ', getRowsNotice);
                 
                 res.status(200).send(getRowsNotice);
             } else {
@@ -136,7 +136,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
             const getRowsNotice = await Notice.findAll({
                 where: { noticeId: req.body.data.noticeIds } 
             });
-            console.log('getRowsNotice: ', getRowsNotice);
+            // console.log('getRowsNotice: ', getRowsNotice);
             res.status(200).json(getRowsNotice);
         } else if (req.body.msgType === eApiMessageType.USER_CREATE_NOTICE_REQ) {
             const getRowUser = await User.findOne({
@@ -144,7 +144,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
                 where: { userId: userIdFromReq } 
             });
 
-            console.log('getRowUser', getRowUser);
+            // console.log('getRowUser', getRowUser);
             const userAccessLevel = getRowUser.dataValues.accessLevel;
 
             if (userAccessLevel < eAccessLevel.SERVICE_OPERATOR) {
@@ -170,7 +170,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
                 where: { userId: userIdFromReq } 
             });
 
-            console.log('getRowUser', getRowUser.dataValues.accessLevel)
+            // console.log('getRowUser', getRowUser.dataValues.accessLevel)
             const userAccessLevel = getRowUser.dataValues.accessLevel;
 
             if (userAccessLevel < eAccessLevel.SERVICE_OPERATOR) {

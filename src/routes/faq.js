@@ -83,8 +83,8 @@ const eApiMessageType = {
 
 // POST /faq
 router.post('/', isLoggedIn, async (req, res, next) => {
-    console.log(req);
-    console.log(req.user.dataValues.userId);
+    // console.log(req);
+    // console.log(req.user.dataValues.userId);
     let userIdFromReq = req.user.dataValues.userId;
     try {
         // login logout을 제외한 나머지 api 작업은 post로 해결. eApiMessageType 으로 분기. req.body.msgType 
@@ -124,7 +124,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
                 where: { userId: userIdFromReq } 
             });
 
-            console.log('getRowUser', getRowUser.dataValues.accessLevel)
+            // console.log('getRowUser', getRowUser.dataValues.accessLevel)
             const userAccessLevel = getRowUser.dataValues.accessLevel;
 
             if (userAccessLevel < eAccessLevel.SERVICE_OPERATOR) {
@@ -147,7 +147,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
                 where: { userId: userIdFromReq } 
             });
 
-            console.log('getRowUser', getRowUser[0].dataValues.accessLevel)
+            // console.log('getRowUser', getRowUser[0].dataValues.accessLevel)
             const userAccessLevel = getRowUser[0].dataValues.accessLevel;
 
             if (userAccessLevel < eAccessLevel.SERVICE_OPERATOR) {

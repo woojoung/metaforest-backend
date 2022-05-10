@@ -4,74 +4,77 @@ const { User } = require('../db/models');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 const { smtpTransport } = require('../config/email');
 
-const eAccessLevel = {
-    NONE : 0,
-    USER : 10,
-    COUNSELOR : 20,
-    SERVICE_OPERATOR : 30,
-    SERVICE_ADMIN : 40,
-    SYSTEM_OPERATOR : 50,
-    SYSTEM_ADMIN : 60,
-}
+const { eAccessLevel } = require('../enums/accessLevel');
+const { eApiMessageType } = require('../enums/apiMessageType')
 
-const eApiMessageType = {
-    NONE : 0,
+// const eAccessLevel = {
+//     NONE : 0,
+//     USER : 10,
+//     COUNSELOR : 20,
+//     SERVICE_OPERATOR : 30,
+//     SERVICE_ADMIN : 40,
+//     SYSTEM_OPERATOR : 50,
+//     SYSTEM_ADMIN : 60,
+// }
 
-    // SERVER_TEST
-    SERVER_TEST_REQ : 10001,
+// const eApiMessageType = {
+//     NONE : 0,
 
-    // USER : 11
-    USER_SIGNUP_REQ : 11001,
-    USER_LOGIN_REQ : 11002,
-    USER_LOGOUT_REQ : 11003,
-    USER_CHANGE_PASSWD_REQ : 11004,
-    USER_GET_ONE_INFO_REQ : 11005,
-    USER_GET_LIST_REQ: 11006,
-    USER_UPDATE_REQ : 11007,
-    USER_UPDATE_NICKNAME_REQ : 11008,
-    USER_UPDATE_PROFILE_IMAGE_URL_REQ : 11009,
-    USER_SIGNUP_AUTHCODE_REQ : 11010,
-    USER_FIND_ACCOUNT_ID_REQ : 11011,
-    USER_FIND_PASSWD_REQ : 11012,
-    USER_CREATE_REQ : 11013,
+//     // SERVER_TEST
+//     SERVER_TEST_REQ : 10001,
 
-
-    // NOTICE : 12
-    USER_CREATE_NOTICE_REQ : 12001,
-    USER_UPDATE_NOTICE_REQ : 12002,
-    USER_DELETE_NOTICE_REQ : 12003,
-    USER_GET_ONE_NOTICE_REQ : 12004,
-    USER_GET_LIST_NOTICE_REQ : 12005,
-    USER_GET_COUNT_NOTICE_REQ : 12006,
-    USER_GET_LIST_NOTICE_BY_SEARCHWORD_REQ : 12007,
+//     // USER : 11
+//     USER_SIGNUP_REQ : 11001,
+//     USER_LOGIN_REQ : 11002,
+//     USER_LOGOUT_REQ : 11003,
+//     USER_CHANGE_PASSWD_REQ : 11004,
+//     USER_GET_ONE_INFO_REQ : 11005,
+//     USER_GET_LIST_REQ: 11006,
+//     USER_UPDATE_REQ : 11007,
+//     USER_UPDATE_NICKNAME_REQ : 11008,
+//     USER_UPDATE_PROFILE_IMAGE_URL_REQ : 11009,
+//     USER_SIGNUP_AUTHCODE_REQ : 11010,
+//     USER_FIND_ACCOUNT_ID_REQ : 11011,
+//     USER_FIND_PASSWD_REQ : 11012,
+//     USER_CREATE_REQ : 11013,
 
 
-    // INQUIRY : 13
-    USER_CREATE_INQUIRY_REQ : 13001,
-    USER_UPDATE_INQUIRY_REQ : 13002,
-    USER_DELETE_INQUIRY_REQ : 13003,
-    USER_GET_ONE_INQUIRY_REQ : 13004,
-    USER_GET_LIST_INQUIRY_REQ : 13005,
+//     // NOTICE : 12
+//     USER_CREATE_NOTICE_REQ : 12001,
+//     USER_UPDATE_NOTICE_REQ : 12002,
+//     USER_DELETE_NOTICE_REQ : 12003,
+//     USER_GET_ONE_NOTICE_REQ : 12004,
+//     USER_GET_LIST_NOTICE_REQ : 12005,
+//     USER_GET_COUNT_NOTICE_REQ : 12006,
+//     USER_GET_LIST_NOTICE_BY_SEARCHWORD_REQ : 12007,
 
 
-    // FAQ : 14
-    USER_CREATE_FAQ_REQ : 14001,
-    USER_UPDATE_FAQ_REQ : 14002,
-    USER_DELETE_FAQ_REQ : 14003,
-    USER_GET_ONE_FAQ_REQ : 14004,
-    USER_GET_LIST_FAQ_REQ : 14005,
-    USER_GET_COUNT_FAQ_REQ : 14006,
-    USER_GET_LIST_FAQ_BY_CATEGORY_REQ : 14007,
+//     // INQUIRY : 13
+//     USER_CREATE_INQUIRY_REQ : 13001,
+//     USER_UPDATE_INQUIRY_REQ : 13002,
+//     USER_DELETE_INQUIRY_REQ : 13003,
+//     USER_GET_ONE_INQUIRY_REQ : 13004,
+//     USER_GET_LIST_INQUIRY_REQ : 13005,
 
-    // PARTNER : 15
-    USER_CREATE_PARTNER_REQ : 15001,
-    USER_UPDATE_PARTNER_REQ : 15002,
-    USER_DELETE_PARTNER_REQ : 15003,
-    USER_GET_ONE_PARTNER_REQ : 15004,
-    USER_GET_LIST_PARTNER_REQ : 15005,
-    USER_GET_COUNT_PARTNER_REQ : 15006,
 
-}
+//     // FAQ : 14
+//     USER_CREATE_FAQ_REQ : 14001,
+//     USER_UPDATE_FAQ_REQ : 14002,
+//     USER_DELETE_FAQ_REQ : 14003,
+//     USER_GET_ONE_FAQ_REQ : 14004,
+//     USER_GET_LIST_FAQ_REQ : 14005,
+//     USER_GET_COUNT_FAQ_REQ : 14006,
+//     USER_GET_LIST_FAQ_BY_CATEGORY_REQ : 14007,
+
+//     // PARTNER : 15
+//     USER_CREATE_PARTNER_REQ : 15001,
+//     USER_UPDATE_PARTNER_REQ : 15002,
+//     USER_DELETE_PARTNER_REQ : 15003,
+//     USER_GET_ONE_PARTNER_REQ : 15004,
+//     USER_GET_LIST_PARTNER_REQ : 15005,
+//     USER_GET_COUNT_PARTNER_REQ : 15006,
+
+// }
 
 // GET /
 router.get('', (req, res) => {
@@ -108,7 +111,7 @@ router.get('/', isLoggedIn, async (req, res, next) => {
 // POST /user
 router.post('/', isLoggedIn, async (req, res, next) => {
     try {
-        console.log(req.body.msgType)
+        // console.log(req.body.msgType)
         if (req.body.msgType === eApiMessageType.USER_GET_LIST_REQ) {
             // const getRowsUser = await User.findAll({
             //     where: { [Op.or]: {[Op.like]: req.body.data.conditions } },
@@ -126,7 +129,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
             const getRowUser = await User.findOne({
                 where: { userId: req.body.data.userId } 
             });
-            console.log(getRowUser)
+            // console.log(getRowUser)
             res.status(200).send({ status: 200, message: "success to get user info", data: {rows: getRowUser}});
         } else if (req.body.msgType === eApiMessageType.USER_UPDATE_REQ) {
             await User.update({
@@ -149,7 +152,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
             const getRowUser = await User.findOne({
                 where: { userNickname: req.body.data.userNickname, email: req.body.data.email  } 
             });
-            console.log(getRowUser)
+            // console.log(getRowUser)
             res.status(200).send(getRowUser);
         } else if (req.body.msgType === eApiMessageType.USER_FIND_PASSWD_REQ) {
             const sendEmail = req.body.data.sendEmail
