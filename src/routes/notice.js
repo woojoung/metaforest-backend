@@ -152,12 +152,12 @@ router.post('/', isLoggedIn, async (req, res, next) => {
             
             res.status(200).json(insertIdNotice);
         } else if (req.body.msgType === eApiMessageType.USER_UPDATE_NOTICE_REQ) {
-            await Notice.update({
+            const updateNotice = await Notice.update({
                 title: req.body.data.title,
                 content: req.body.data.content,
             }, {where: { noticeId: req.body.data.noticeId }});
             
-            res.status(200).json();
+            res.status(200).send({ status: 200, message: "success to update notice", data: {updateNotice}});
         } else if (req.body.msgType === eApiMessageType.USER_DELETE_NOTICE_REQ) {
             const getRowUser = await User.findOne({
                 attributes: ['accessLevel'],
