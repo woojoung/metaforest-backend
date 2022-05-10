@@ -1,6 +1,5 @@
 const Sequelize = require('sequelize');
 const User = require('./user');
-// const Admin = require('./admin');
 // const Inquiry = require('./inquiry');
 // const Event = require('./event');
 const Notice = require('./notice');
@@ -19,7 +18,6 @@ db.sequelize = sequelize;
 
 // model 정보를 읽어온다.
 db.User = User;
-// db.Admin = Admin;
 // db.Inquiry = Inquiry;
 // db.Event = Event;
 db.Notice = Notice;
@@ -27,7 +25,6 @@ db.Faq = Faq;
 db.Partner = Partner;
 
 User.init(sequelize);
-// Admin.init(sequelize);
 // Inquiry.init(sequelize);
 // Event.init(sequelize);
 Notice.init(sequelize);
