@@ -1,4 +1,4 @@
-const eApiMessageType = module.exports = {
+module.exports = {
     NONE : 0,
 
     // SERVER_TEST
