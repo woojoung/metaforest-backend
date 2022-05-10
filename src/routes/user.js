@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { User } = require('../db/models');
-const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
+const { isLoggedIn } = require('./middlewares');
 const { smtpTransport } = require('../config/email');
 
 const { eAccessLevel } = require('../enums/accessLevel');
