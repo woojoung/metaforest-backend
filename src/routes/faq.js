@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { Notice, User, Faq } = require('../db/models');
-// const { eApiMessageType } = require('../enums/apiMessageType');
-const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
+const { User, Faq } = require('../db/models');
+const { isLoggedIn } = require('./middlewares');
 
 const eAccessLevel = {
     NONE : 0,
@@ -78,6 +77,7 @@ const eApiMessageType = {
     USER_GET_ONE_PARTNER_REQ : 15004,
     USER_GET_LIST_PARTNER_REQ : 15005,
     USER_GET_COUNT_PARTNER_REQ : 15006,
+    USER_VERIFY_PARTNER_CODE_REQ : 15007,
 
 }
 
