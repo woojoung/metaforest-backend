@@ -50,7 +50,7 @@ module.exports = class User extends Sequelize.Model {
                 type: Sequelize.STRING(10),
                 allowNull: false,
                 defaultValue: '1970-01-01',
-                comment: '생일'
+                comment: '생년월일'
             },
             md5Mobile: {
                 type: Sequelize.STRING(32),
