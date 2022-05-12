@@ -6,7 +6,6 @@ module.exports = () => {
     passport.use('local', new LocalStrategy({
         usernameField: 'email',
         passwordField: 'password',
-        // session: true, // 세션에 저장 여부
     }, async (email, password, done) => { 
         try {
             const user = await User.findOne({
@@ -14,7 +13,6 @@ module.exports = () => {
                 plain: true
             });
             if (!user) {
-                // passport에서는 res로 응답이 아닌, 우선 done으로 처리.
                 return done(null, false, { message: 'Incorrect email'});
             }
 
