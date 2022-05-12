@@ -88,12 +88,13 @@ router.post('/', isLoggedIn, async (req, res, next) => {
     let userIdFromReq = req.user.dataValues.userId;
     try {
         // login logout을 제외한 나머지 api 작업은 post로 해결. eApiMessageType 으로 분기. req.body.msgType 
+        // api가 증가하면, api 디렉토리 depth 하나 더 추가해서 switch 문으로 분기하는 방법 고려.
         if (req.body.msgType === eApiMessageType.USER_GET_COUNT_FAQ_REQ) {
             const getRowsFaq = await Faq.findAll({
                 order: [['ordering', 'DESC']]
             });
             
-            res.status(200).json(getRowsFaq);
+            res.status(200).send(getRowsFaq);
         } else if (req.body.msgType === eApiMessageType.USER_GET_LIST_FAQ_REQ) {
             const getRowFaq = await Faq.findAll({
                 where: { isApproved: 'Y' },
@@ -102,7 +103,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
                 limit: 10 
             });
             
-            res.status(200).json(getRowFaq);
+            res.status(200).send(getRowFaq);
         } else if (req.body.msgType === eApiMessageType.USER_GET_LIST_FAQ_BY_CATEGORY_REQ) {
             const getRowFaq = await Faq.findAll({
                 where: { isApproved: 'Y', categoty: req.body.data.category },
@@ -111,13 +112,13 @@ router.post('/', isLoggedIn, async (req, res, next) => {
                 limit: 10 
             });
             
-            res.status(200).json(getRowFaq);
+            res.status(200).send(getRowFaq);
         } else if (req.body.msgType === eApiMessageType.USER_GET_ONE_FAQ_REQ) {
             const getRowFaq = await Faq.findOne({
                 where: { userId: req.body.data.faqId } 
             });
             
-            res.status(200).json(getRowFaq);
+            res.status(200).send(getRowFaq);
         } else if (req.body.msgType === eApiMessageType.USER_CREATE_FAQ_REQ) {
             const getRowUser = await User.findOne({
                 attributes: ['accessLevel'],
@@ -128,7 +129,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
             const userAccessLevel = getRowUser.dataValues.accessLevel;
 
             if (userAccessLevel < eAccessLevel.SERVICE_OPERATOR) {
-                return res.status(200).json({ status: "Forbidden", errCode: 403, message: "Incorect accessLevel"});
+                return res.status(200).send({ status: 403, errCode: 403, message: "Forbidden, Incorect accessLevel"});
             }
 
             const insertIdFaq = await Faq.create({
@@ -140,7 +141,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
                 // isApproved: req.body.data.isApproved,
             });
             
-            res.status(200).json(insertIdFaq);
+            res.status(200).send(insertIdFaq);
         } else if (req.body.msgType === eApiMessageType.USER_UPDATE_FAQ_REQ) {
             const getRowUser = await User.findOne({
                 attributes: ['accessLevel'],
@@ -151,7 +152,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
             const userAccessLevel = getRowUser[0].dataValues.accessLevel;
 
             if (userAccessLevel < eAccessLevel.SERVICE_OPERATOR) {
-                res.status(200).json({ status: "Forbidden", errCode: 403, message: "Incorect accessLevel"});
+                res.status(200).send({ status: 403, errCode: 403, message: "Forbidden, Incorect accessLevel"});
             }
 
             await Faq.update({
@@ -163,9 +164,9 @@ router.post('/', isLoggedIn, async (req, res, next) => {
                 isApproved: req.body.data.isApproved,
             }, {where: { noticeId: req.body.data.noticeId }});
             
-            res.status(200).json();
+            res.status(200).send();
         } else {
-            res.status(200).json(null);
+            res.status(200).send(null);
         }
     } catch(error) {
         console.error(error);
