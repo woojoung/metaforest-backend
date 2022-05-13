@@ -8,7 +8,7 @@ module.exports = class Notice extends Sequelize.Model {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
-                comment: '번호'
+                comment: '공지사항 번호'
             },
             ordering: {
                 type: Sequelize.INTEGER(11),
