@@ -162,9 +162,9 @@ router.post('/', isLoggedIn, async (req, res, next) => {
                 content: req.body.data.content,
                 adminId: req.body.data.adminId,
                 isApproved: req.body.data.isApproved,
-            }, {where: { noticeId: req.body.data.noticeId }});
+            }, {where: { noticeId: req.body.data.faqId }});
             
-            res.status(200).send();
+            res.status(200).send({ status: 200, message: "success to update faq", data: {}});
         } else {
             res.status(200).send(null);
         }
