@@ -118,7 +118,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
             const userAccessLevel = getRowUser.dataValues.accessLevel;
 
             if (userAccessLevel < eAccessLevel.SERVICE_OPERATOR) {
-                res.status(200).send({ status: "Forbidden", errCode: 403, message: "Incorect accessLevel"});
+                res.status(200).send({ status: 403, message: "Incorect accessLevel"});
             }
 
             const insertIdPartner = await Partner.create({
@@ -129,7 +129,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
                 planExpiryTime: req.body.data.planExpiryTime
             });
             
-            res.status(200).json(insertIdPartner);
+            res.status(200).send({ status: 200, message: "Incorect accessLevel", data: insertIdPartner});
         } else if (req.body.msgType === eApiMessageType.USER_UPDATE_PARTNER_REQ) {
             await Partner.update({
                 partnerNickname: req.body.data.partnerNickname,
@@ -140,7 +140,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
                 isApproved: req.body.data.isApproved
             }, {where: { partnerId: req.body.data.partnerId }});
             
-            res.status(200).json();
+            res.status(200).send();
         } else if (req.body.msgType === eApiMessageType.USER_DELETE_PARTNER_REQ) {
             const getRowUser = await User.findOne({
                 attributes: ['accessLevel'],
@@ -151,7 +151,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
             const userAccessLevel = getRowUser.dataValues.accessLevel;
 
             if (userAccessLevel < eAccessLevel.SERVICE_OPERATOR) {
-                return res.status(200).send({ status: 403, errCode: 403, message: "Incorect accessLevel"});
+                return res.status(200).send({ status: 403, message: "Incorect accessLevel"});
             }
 
             await Partner.destroy({
@@ -174,6 +174,12 @@ router.post('/', isLoggedIn, async (req, res, next) => {
             });
             // console.log('getRowsPartner: ', getRowsPartner);
             res.status(200).send({ status: 200, message: "success to get list partner", data: {rows: getRowsPartner}});
+        } else if (req.body.msgType === eApiMessageType.USER_GET_COUNT_PARTNER_REQ) {
+            const getRowsPartner = await Partner.findAll({
+                order: [['partnerId', 'DESC']]
+            });
+            // console.log('getRowsPartner: ', getRowsPartner);
+            res.status(200).send({ status: 200, message: "success to get count partner", data: {rows: getRowsPartner}});
         } else {
             res.status(200).send(null);
         }
