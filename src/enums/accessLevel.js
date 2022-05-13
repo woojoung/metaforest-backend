@@ -1,6 +1,6 @@
 'use strict'
 
-const eAccessLevel = module.exports = {
+module.exports = {
     NONE : 0,
     USER : 10,
     COUNSELOR : 20,
