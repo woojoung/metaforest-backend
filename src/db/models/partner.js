@@ -47,6 +47,7 @@ module.exports = class Partner extends Sequelize.Model {
                 comment: '승인여부'
             },
         },{
+            indexes: [{type: 'UNIQUE', fields: ['partnerNickname']}],
             sequelize,
             timestamps: true, // createAt, updateAt 자동 생성
             underscored: false, // sequelize에서 _ 사용할지 말지 ex) createAt -> create_at
