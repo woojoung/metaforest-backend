@@ -150,7 +150,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
                 content: req.body.data.content,
             });
             
-            res.status(200).json(insertIdNotice);
+            res.status(200).send({ status: 200, message: "success to update notice", data: insertIdNotice});
         } else if (req.body.msgType === eApiMessageType.USER_UPDATE_NOTICE_REQ) {
             const updateNotice = await Notice.update({
                 title: req.body.data.title,
