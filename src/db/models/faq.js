@@ -8,7 +8,7 @@ module.exports = class Faq extends Sequelize.Model {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
-                comment: '번호'
+                comment: 'FAQ 번호'
             },
             ordering: {
                 type: Sequelize.INTEGER(11),
@@ -20,7 +20,7 @@ module.exports = class Faq extends Sequelize.Model {
                 type: Sequelize.INTEGER(11),
                 allowNull: false,
                 defaultValue: '0',
-                comment: '분류'
+                comment: 'FAQ 분류'
             },
             title: {
                 type: Sequelize.STRING(192),
