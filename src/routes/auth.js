@@ -140,6 +140,7 @@ router.post('/signup', isNotLoggedIn, async (req, res, next) => {
                 gender: req.body.data.gender,
                 birth: req.body.data.birth,
                 md5Mobile: req.body.data.md5Mobile,
+                marketingAgreeTime: req.body.data.marketingAgreeTime,
                 accessLevel: req.body.data.accessLevel,
             });
 
