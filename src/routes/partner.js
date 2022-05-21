@@ -126,7 +126,8 @@ router.post('/', isLoggedIn, async (req, res, next) => {
                 code: req.body.data.code,
                 plan: req.body.data.plan,
                 planStartTime: req.body.data.planStartTime,
-                planExpiryTime: req.body.data.planExpiryTime
+                planExpiryTime: req.body.data.planExpiryTime,
+                isApproved: req.body.data.isApproved
             });
             
             res.status(200).send({ status: 200, message: "Incorect accessLevel", data: insertIdPartner});
