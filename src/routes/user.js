@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const { User } = require('../db/models');
+const { User, Partner } = require('../db/models');
 const { isLoggedIn } = require('./middlewares');
 const { smtpTransport } = require('../config/email');
+const { Op } = require('sequelize');
 
 const eAccessLevel = {
     NONE : 0,
@@ -109,18 +110,70 @@ router.get('/', isLoggedIn, async (req, res, next) => {
 // POST /user
 router.post('/', isLoggedIn, async (req, res, next) => {
     try {
-        // console.log(req.body.msgType)
         if (req.body.msgType === eApiMessageType.USER_GET_LIST_REQ) {
+
+            let like1 = req.body.data.like1 ?? '';
+            const keyword1 = req.body.data.keyword1 ?? '';
+            const field1 = req.body.data.field1 ?? '';
+            let orderBy = req.body.data.orderBy ?? '';
+            const isAsc = req.body.data.isAsc ?? 'DESC';
+
+            like1 = JSON.parse(like1);
+
+            let getRowsUser = [];
+
+            if (orderBy === '') {
+                orderBy = User.primaryKeyAttribute;
+            }
+
+            if (like1 === true && field1 !== '' && keyword1 !== '') {
+                getRowsUser = await User.findAll({
+                    where: { [field1] : {[Op.like]: '%' + keyword1 + '%'} },
+                    order: [[orderBy, isAsc]],
+                    offset: req.body.data.offset,
+                    limit: req.body.data.limit
+                });
+            } else if (like1 === false && field1 !== '' && keyword1 !== '') {
+                getRowsUser = await User.findAll({
+                    where: { [field1] : keyword1 },
+                    order: [[orderBy, isAsc]],
+                    offset: req.body.data.offset,
+                    limit: req.body.data.limit
+                });
+            } else {
+                getRowsUser = await User.findAll({
+                    order: [[orderBy, isAsc]],
+                    offset: req.body.data.offset,
+                    limit: req.body.data.limit
+                });
+            }
+            
+
             // const getRowsUser = await User.findAll({
-            //     where: { [Op.or]: {[Op.like]: req.body.data.conditions } },
-            //     order: [['userId', 'DESC']],
-            //     offset: req.body.data.offset,
-            //     limit: req.body.data.limit
+            //     order: [['userId', 'DESC']]
             // });
 
-            const getRowsUser = await User.findAll({
-                order: [['userId', 'DESC']]
+            const getRowsPartner = await Partner.findAll({
+                order: [['partnerId', 'DESC']]
             });
+
+            let partnerId = 0;
+            const _partners = {};
+
+            for (let i = 0; i < getRowsPartner.length; ++i) {
+                partnerId = getRowsPartner[i].partnerId
+                if (typeof partnerId !== 'undefined') {
+                    _partners[partnerId] = getRowsPartner[i].partnerNickname
+                }
+            }
+
+            getRowsUser.map((_rowUser) => {
+                if (typeof _rowUser.partnerId !== 'undefined') {
+                    if (_rowUser.partnerId in _partners) {
+                        _rowUser.dataValues.partnerNickname = _partners[_rowUser.partnerId];
+                    }
+                }
+            })
 
             res.status(200).send({ status: 200, message: "success to get list user", data: {rows: getRowsUser}});
         } else if (req.body.msgType === eApiMessageType.USER_GET_ONE_INFO_REQ) {

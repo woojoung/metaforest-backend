@@ -1,7 +1,7 @@
 module.exports = {
     NONE : 0,
-    BASIC : 10,
-    PRO : 20,
-    FREE_TRIAL : 30,
+    FREE_TRIAL : 10,
+    BASIC : 20,
+    PRO : 30,
     PREMIUM : 40,
 }
