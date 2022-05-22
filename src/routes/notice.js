@@ -148,6 +148,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
             const insertIdNotice = await Notice.create({
                 title: req.body.data.title,
                 content: req.body.data.content,
+                isApproved: req.body.data.isApproved,
             });
             
             res.status(200).send({ status: 200, message: "success to update notice", data: insertIdNotice});
