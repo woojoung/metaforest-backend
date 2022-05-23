@@ -133,12 +133,12 @@ router.post('/', isLoggedIn, async (req, res, next) => {
             }
 
             const insertIdFaq = await Faq.create({
-                // ordering: req.body.data.ordering,
+                ordering: req.body.data.ordering,
                 category: req.body.data.category,
                 title: req.body.data.title,
                 content: req.body.data.content,
-                adminId: userIdFromReq, //userId
-                // isApproved: req.body.data.isApproved,
+                // adminId: userIdFromReq, //userId
+                isApproved: req.body.data.isApproved,
             });
             
             res.status(200).send(insertIdFaq);
@@ -160,9 +160,10 @@ router.post('/', isLoggedIn, async (req, res, next) => {
                 category: req.body.data.category,
                 title: req.body.data.title,
                 content: req.body.data.content,
-                adminId: req.body.data.adminId,
+                // adminId: req.body.data.adminId,
                 isApproved: req.body.data.isApproved,
-            }, {where: { noticeId: req.body.data.faqId }});
+                updatedAt: req.body.data.updatedAt
+            }, {where: { faqId: req.body.data.faqId }});
             
             res.status(200).send({ status: 200, message: "success to update faq", data: {}});
         } else {
