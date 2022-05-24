@@ -199,7 +199,7 @@ router.post('/signup', isNotLoggedIn, async (req, res, next) => {
             };
             
             const axiosResponse = await axios.post(url,body,options)
-            return res.status(200).send({ status: 200, errCode: 200, message: "success to send email", axiosResponse: axiosResponse });
+            return res.status(200).send({ status: 200, errCode: 200, message: "success to send email", data: {axiosResponse: axiosResponse, authCode: authCode} });
 
 
         } else {
