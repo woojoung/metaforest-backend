@@ -6,6 +6,9 @@ const router = express.Router();
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 const { smtpTransport } = require('../config/email');
 
+const crypto = require('crypto');
+const axios = require('axios');
+
 
 const eAccessLevel = {
     NONE : 0,
@@ -36,6 +39,7 @@ const eApiMessageType = {
     USER_SIGNUP_AUTHCODE_REQ : 11010,
     USER_FIND_ACCOUNT_ID_REQ : 11011,
     USER_FIND_PASSWD_REQ : 11012,
+    USER_SIGNUP_AUTH_MOBILE_REQ : 11013,
 
 
     // NOTICE : 12
@@ -145,6 +149,59 @@ router.post('/signup', isNotLoggedIn, async (req, res, next) => {
             });
 
             res.status(201).send({ status: 200, errCode: 200, message: "success to create user"});
+        } else if (req.body.msgType === eApiMessageType.USER_SIGNUP_AUTH_MOBILE_REQ) {
+            const phone = req.body.data.phone ?? '';
+
+            if (phone === '') {
+                return res.status(200).send({ status: 500, errCode: 500, message: "phone === ''"});
+            }
+            const scretKey = process.env.SECRET_KEY;
+            const accessKeyId = process.env.ACCESS_KEY_ID;
+            const uri = process.env.SERVICE_ID; 
+
+            const user_phone_number = phone;
+            const date = Date.now().toString();
+
+            const method = "POST";
+            const space = " ";
+            const newLine = "\n";
+            const url = `https://sens.apigw.ntruss.com/sms/v2/services/${uri}/messages`;
+            const url2 = `/sms/v2/services/${uri}/messages`;
+
+            const hmac = crypto.createHmac('sha256', scretKey);
+            hmac.update(method);
+            hmac.update(space);
+            hmac.update(url2);
+            hmac.update(newLine);
+            hmac.update(date);
+            hmac.update(newLine);
+            hmac.update(accessKeyId);
+            const signature = hmac.digest('base64');
+
+            const body = {
+                type: "SMS",
+                countryCode: "82",
+                from: "01012341234",//"발신번호기입",
+                content: "naver_sms_test", // 인증번호
+                messages: [
+                  { to: `${user_phone_number}`, }],
+            };
+            
+            const options = {
+                headers: {
+                  "Contenc-type": "application/json; charset=utf-8",
+                  "x-ncp-iam-access-key": accessKeyId, // accessKey 
+                  "x-ncp-apigw-timestamp": date,
+                  "x-ncp-apigw-signature-v2": signature, 
+                },
+            };
+            
+            const axios_response = await axios.post(url,body,options)
+            return axios_response;
+
+
+        } else {
+            res.status(200).send(null);
         }
         
     } catch(err) {
