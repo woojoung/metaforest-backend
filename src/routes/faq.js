@@ -91,6 +91,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
         // api가 증가하면, api 디렉토리 depth 하나 더 추가해서 switch 문으로 분기하는 방법 고려.
         if (req.body.msgType === eApiMessageType.USER_GET_COUNT_FAQ_REQ) {
             const getRowsFaq = await Faq.findAll({
+                where: { isApproved: 'Y', categoty: req.body.data.category },
                 order: [['ordering', 'DESC']]
             });
             
