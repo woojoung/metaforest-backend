@@ -40,6 +40,7 @@ const eApiMessageType = {
     USER_FIND_ACCOUNT_ID_REQ : 11011,
     USER_FIND_PASSWD_REQ : 11012,
     USER_SIGNUP_AUTH_MOBILE_REQ : 11013,
+    USER_SIGNUP_VERIFY_ACCOUNT_ID_REQ : 11014,
 
 
     // NOTICE : 12
@@ -202,6 +203,18 @@ router.post('/signup', isNotLoggedIn, async (req, res, next) => {
             return res.status(200).send({ status: 200, errCode: 200, message: "success to send email", data: {axiosResponse: axiosResponse, authCode: authCode} });
 
 
+        } else if (req.body.msgType === eApiMessageType.USER_SIGNUP_VERIFY_ACCOUNT_ID_REQ) {
+            // deletedAt null 인 경우 추가.
+            const exAccountId = await User.findOne({
+                where: {
+                    accountId: req.body.data.accountId,
+                }
+            });
+            if (exAccountId) {
+                return res.status(200).send({ status: 302, errCode: 302, message: "used accountId"});
+            }
+
+            res.status(200).send({ status: 200, errCode: 200, message: "success to create user"});
         } else {
             res.status(200).send(null);
         }
