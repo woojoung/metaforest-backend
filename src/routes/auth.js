@@ -178,7 +178,7 @@ router.post('/signup', isNotLoggedIn, async (req, res, next) => {
             hmac.update(accessKeyId);
             const signature = hmac.digest('base64');
 
-            const authCode = generateRandom(111111, 999999);
+            const authCode = generateRandom(11111, 99999);
 
             const body = {
                 type: "SMS",
