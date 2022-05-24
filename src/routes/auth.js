@@ -159,7 +159,7 @@ router.post('/signup', isNotLoggedIn, async (req, res, next) => {
             const accessKeyId = process.env.ACCESS_KEY_ID;
             const uri = process.env.SERVICE_ID; 
 
-            const user_phone_number = phone;
+            const userPhoneNumber = phone;
             const date = Date.now().toString();
 
             const method = "POST";
@@ -178,26 +178,28 @@ router.post('/signup', isNotLoggedIn, async (req, res, next) => {
             hmac.update(accessKeyId);
             const signature = hmac.digest('base64');
 
+            const authCode = generateRandom(111111, 999999);
+
             const body = {
                 type: "SMS",
                 countryCode: "82",
                 from: "01012341234",//"발신번호기입",
-                content: "naver_sms_test", // 인증번호
+                content: `MetaForest 인증번호 ${authCode} 입니다.`,
                 messages: [
-                  { to: `${user_phone_number}`, }],
+                  { to: `${userPhoneNumber}`, }],
             };
             
             const options = {
                 headers: {
                   "Contenc-type": "application/json; charset=utf-8",
-                  "x-ncp-iam-access-key": accessKeyId, // accessKey 
+                  "x-ncp-iam-access-key": accessKeyId,
                   "x-ncp-apigw-timestamp": date,
                   "x-ncp-apigw-signature-v2": signature, 
                 },
             };
             
-            const axios_response = await axios.post(url,body,options)
-            return axios_response;
+            const axiosResponse = await axios.post(url,body,options)
+            return res.status(200).send({ status: 200, errCode: 200, message: "success to send email", axiosResponse: axiosResponse });
 
 
         } else {
