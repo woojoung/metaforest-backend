@@ -1,5 +1,5 @@
 const express = require('express');
-const { User } = require('../db/models');
+const { User, Partner } = require('../db/models');
 const passport = require('passport');
 
 const router = express.Router();
@@ -249,6 +249,14 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
                     exclude: ['password'],
                 }
             });
+
+            const getOnePartner = await Partner.findOne({
+                where: { email: fullUserWithoutPassword.dataValues.partnerId },
+                order: [['partnerId', 'DESC']]
+            });
+
+            fullUserWithoutPassword.dataValues.plan = getOnePartner.plan;
+            fullUserWithoutPassword.dataValues.partnerNickname = getOnePartner.partnerNickname;
 
             return res.status(200).send({ status: 200, errCode: 200, message: "OK", data: fullUserWithoutPassword});
         });
