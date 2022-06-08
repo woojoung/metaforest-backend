@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Notice, User } = require('../db/models');
+const { Notice, User, Partner } = require('../db/models');
 // const { eApiMessageType } = require('../enums/apiMessageType');
 const { isLoggedIn } = require('./middlewares');
 
