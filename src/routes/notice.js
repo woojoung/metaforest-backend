@@ -83,6 +83,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
         // login logout을 제외한 나머지 api 작업은 post로 해결. eApiMessageType 으로 분기. req.body.msgType 
         if (req.body.msgType === eApiMessageType.USER_GET_COUNT_NOTICE_REQ) {
             const getRowsNotice = await Notice.findAll({
+                where: { isApproved: 'Y' },
                 order: [['ordering', 'DESC']]
             });
             // console.log('getRowsNotice: ', getRowsNotice);
