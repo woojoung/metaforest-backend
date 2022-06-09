@@ -251,12 +251,12 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
             });
 
             const getOnePartner = await Partner.findOne({
-                where: { email: fullUserWithoutPassword.dataValues.partnerId },
+                where: { partnerId: fullUserWithoutPassword.dataValues.partnerId },
                 order: [['partnerId', 'DESC']]
             });
 
-            fullUserWithoutPassword.dataValues.plan = getOnePartner.plan;
-            fullUserWithoutPassword.dataValues.partnerNickname = getOnePartner.partnerNickname;
+            fullUserWithoutPassword.dataValues.plan = getOnePartner.plan ?? 0;
+            fullUserWithoutPassword.dataValues.partnerNickname = getOnePartner.partnerNickname ?? '';
 
             return res.status(200).send({ status: 200, errCode: 200, message: "OK", data: fullUserWithoutPassword});
         });
