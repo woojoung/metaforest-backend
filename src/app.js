@@ -17,6 +17,7 @@ const authRouter = require('./routes/auth');
 const noticeRouter = require('./routes/notice');
 const faqRouter = require('./routes/faq');
 const partnerRouter = require('./routes/partner');
+const adminRouter = require('./routes/admin');
 
 // process.env 의 secret 연결
 dotenv.config();
@@ -87,6 +88,7 @@ app.use('/auth', authRouter);
 app.use('/notice', noticeRouter);
 app.use('/faq', faqRouter);
 app.use('/partner', partnerRouter);
+app.use('/admin', adminRouter);
 
 app.get('', (req, res) => {
     res.send('<h1>OK</h1>');
