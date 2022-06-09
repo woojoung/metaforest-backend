@@ -437,6 +437,24 @@ router.post('/', isLoggedIn, async (req, res, next) => {
                 });
             }
 
+            let partnerId = 0;
+            let userCount = 0;
+            const _users = {};
+
+            for (let i = 0; i < getRowsPartner.length; ++i) {
+                partnerId = getRowsPartner[i].partnerId;
+                userCount = await User.count({
+                    where: { partnerId: partnerId }
+                });
+                _users[partnerId] = userCount;
+            }
+
+            getRowsPartner.map((_rowPartner) => {
+                if (_rowPartner.partnerId in _users) {
+                    _rowPartner.dataValues.userCount = _users[_rowPartner.partnerId];
+                }
+            })
+
             res.status(200).send({ status: 200, message: "success to get list partner", data: {rows: getRowsPartner}});
         } else {
             res.status(200).send(null);
