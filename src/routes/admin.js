@@ -178,6 +178,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
             const insertIdNotice = await Notice.create({
                 title: req.body.data.title,
                 content: req.body.data.content,
+                adminId: req.body.data.adminId,
                 isApproved: req.body.data.isApproved,
             });
             
@@ -268,6 +269,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
             const insertIdFaq = await Faq.create({
                 title: req.body.data.title,
                 content: req.body.data.content,
+                adminId: req.body.data.adminId,
                 isApproved: req.body.data.isApproved,
             });
             
