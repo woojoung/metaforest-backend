@@ -11,7 +11,9 @@ module.exports = {
     "dialect": "mysql",
     "timezone": "+09:00",
     "dialectOptions": {
-      "timezone": "+09:00"
+      "timezone": "+09:00",
+      "dateStrings": true,
+      "typeCast": true
     }
   },
   "test": {
@@ -22,7 +24,9 @@ module.exports = {
     "dialect": "mysql",
     "timezone": "+09:00",
     "dialectOptions": {
-      "timezone": "+09:00"
+      "timezone": "+09:00",
+      "dateStrings": true,
+      "typeCast": true
     }
   },
   "production": {
@@ -33,7 +37,9 @@ module.exports = {
     "dialect": "mysql",
     "timezone": "+09:00",
     "dialectOptions": {
-      "timezone": "+09:00"
+      "timezone": "+09:00",
+      "dateStrings": true,
+      "typeCast": true
     }
   }
 }
