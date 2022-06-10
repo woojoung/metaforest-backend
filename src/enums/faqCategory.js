@@ -1,8 +1,8 @@
 module.exports = {
     NONE : 0,
-    ONE_TO_ONE : 10,
-    GROUP : 20,
-    EAP : 30,
-    TUTORIAL : 40,
-    COMMUNITY : 50,
+    PROGRAM_USAGE : 10,
+    COUNSELING : 20,
+    PARTNER_REGISTRATION : 30,
+    MEMBERSHIP : 40,
+    ETC : 50,
 }
