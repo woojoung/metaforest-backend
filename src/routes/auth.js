@@ -114,7 +114,6 @@ router.post('/signup', isNotLoggedIn, async (req, res, next) => {
                     // console.log(info.response);
                     return res.status(200).send({ status: 200, errCode: 200, message: "success to send email", authCode: authCode });
                 }
-
             });
             
         } else if (req.body.msgType === eApiMessageType.USER_SIGNUP_REQ) {
