@@ -287,7 +287,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
                 content: req.body.data.content,
                 adminId: req.body.data.adminId,
                 isApproved: req.body.data.isApproved,
-            }, {where: { noticeId: req.body.data.faqId }});
+            }, {where: { faqId: req.body.data.faqId }});
             
             res.status(200).send({ status: 200, message: "success to update faq", data: updateFaq});
         } else if (req.body.msgType === eApiMessageType.ADMIN_DELETE_FAQ_REQ) {
