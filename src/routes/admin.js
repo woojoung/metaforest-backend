@@ -176,6 +176,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
             }
 
             const insertIdNotice = await Notice.create({
+                ordering: req.body.data.ordering,
                 title: req.body.data.title,
                 content: req.body.data.content,
                 adminId: req.body.data.adminId,
@@ -185,8 +186,10 @@ router.post('/', isLoggedIn, async (req, res, next) => {
             res.status(200).send({ status: 200, message: "success to create notice", data: insertIdNotice});
         } else if (req.body.msgType === eApiMessageType.ADMIN_UPDATE_NOTICE_REQ) {
             const updateNotice = await Notice.update({
+                ordering: req.body.data.ordering,
                 title: req.body.data.title,
                 content: req.body.data.content,
+                adminId: req.body.data.adminId,
                 isApproved: req.body.data.isApproved,
             }, {where: { noticeId: req.body.data.noticeId }});
             
@@ -267,6 +270,8 @@ router.post('/', isLoggedIn, async (req, res, next) => {
             }
 
             const insertIdFaq = await Faq.create({
+                ordering: req.body.data.ordering,
+                category: req.body.data.category,
                 title: req.body.data.title,
                 content: req.body.data.content,
                 adminId: req.body.data.adminId,
@@ -276,6 +281,8 @@ router.post('/', isLoggedIn, async (req, res, next) => {
             res.status(200).send({ status: 200, message: "success to create faq", data: insertIdFaq});
         } else if (req.body.msgType === eApiMessageType.ADMIN_UPDATE_FAQ_REQ) {
             const updateFaq = await Faq.update({
+                ordering: req.body.data.ordering,
+                category: req.body.data.category,
                 title: req.body.data.title,
                 content: req.body.data.content,
                 adminId: req.body.data.adminId,
