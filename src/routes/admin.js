@@ -162,11 +162,11 @@ router.post('/', isLoggedIn, async (req, res, next) => {
 
             res.status(200).send({ status: 200, message: "success to get list user", data: {rows: getRowsUser}});
         } else if (req.body.msgType === eApiMessageType.ADMIN_CHANGE_PASSWD_USER_REQ) {
-            await User.update({
+            const updateUser = await User.update({
                 password: req.body.data.password
             }, {where: { email: req.body.data.email }});
             
-            res.status(200).send({ status: 200, message: "success to change user password", data: {rows: getRowUser}});
+            res.status(200).send({ status: 200, message: "success to change user password", data: updateUser});
         } else if (req.body.msgType === eApiMessageType.ADMIN_CREATE_NOTICE_REQ) {
             const getRowUser = await User.findOne({
                 attributes: ['accessLevel'],
