@@ -109,7 +109,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
             res.status(200).send({ status: 200, message: "success to get list faq", data: {rows: getRowFaq}});
         } else if (req.body.msgType === eApiMessageType.USER_GET_LIST_FAQ_BY_CATEGORY_REQ) {
             const getRowFaq = await Faq.findAll({
-                where: { isApproved: 'Y', categoty: req.body.data.category },
+                where: { isApproved: 'Y', category: req.body.data.category },
                 order: [['faqId', 'DESC']],
                 offset: 10 * (req.body.data.page - 1),
                 limit: 10 
