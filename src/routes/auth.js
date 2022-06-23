@@ -157,7 +157,8 @@ router.post('/signup', isNotLoggedIn, async (req, res, next) => {
             }
             const scretKey = process.env.SECRET_KEY;
             const accessKeyId = process.env.ACCESS_KEY_ID;
-            const uri = process.env.SERVICE_ID; 
+            const uri = process.env.SERVICE_ID;
+            const smsFromNumber = process.env.SMS_FROM_MOBILE;
 
             const userPhoneNumber = phone;
             const date = Date.now().toString();
@@ -183,7 +184,7 @@ router.post('/signup', isNotLoggedIn, async (req, res, next) => {
             const body = {
                 type: "SMS",
                 countryCode: "82",
-                from: "01012341234",//"발신번호기입",
+                from: smsFromNumber,//"발신번호기입",
                 content: `MetaForest 인증번호 ${authCode} 입니다.`,
                 messages: [
                   { to: `${userPhoneNumber}`, }],
