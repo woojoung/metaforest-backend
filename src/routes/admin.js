@@ -34,7 +34,8 @@ const eApiMessageType = {
     ADMIN_UPDATE_USER_REQ : 16002,
     ADMIN_DELETE_USER_REQ : 16003,
     ADMIN_GET_ONE_USER_REQ : 16004,
-    ADMIN_GET_LIST_USER_REQ: 16005,
+    ADMIN_GET_LIST_USER_REQ : 16005,
+    ADMIN_CHANGE_PASSWD_USER_REQ : 16006,
 
     ADMIN_CREATE_NOTICE_REQ : 16011,
     ADMIN_UPDATE_NOTICE_REQ : 16012,
@@ -69,7 +70,6 @@ router.post('/', isLoggedIn, async (req, res, next) => {
                 password: req.body.data.password,
                 email: req.body.data.email,
                 accessLevel: req.body.data.accessLevel,
-                createdAt: req.body.data.createdAt
             });
             
             res.status(200).send({ status: 200, message: "success to create admin", data: {}});
@@ -86,7 +86,6 @@ router.post('/', isLoggedIn, async (req, res, next) => {
                 marketingAgreeTime: req.body.data.marketingAgreeTime,
                 partnerId: req.body.data.partnerId,
                 accessLevel: req.body.data.accessLevel,
-                updatedAt: req.body.data.updatedAt
             }, {where: { userId: req.body.data.userId }});
             
             res.status(200).send({ status: 200, message: "success to update user info", data: {}});
@@ -162,6 +161,12 @@ router.post('/', isLoggedIn, async (req, res, next) => {
             })
 
             res.status(200).send({ status: 200, message: "success to get list user", data: {rows: getRowsUser}});
+        } else if (req.body.msgType === eApiMessageType.ADMIN_CHANGE_PASSWD_USER_REQ) {
+            const updateUser = await User.update({
+                password: req.body.data.password
+            }, {where: { email: req.body.data.email }});
+            
+            res.status(200).send({ status: 200, message: "success to change user password", data: updateUser});
         } else if (req.body.msgType === eApiMessageType.ADMIN_CREATE_NOTICE_REQ) {
             const getRowUser = await User.findOne({
                 attributes: ['accessLevel'],
