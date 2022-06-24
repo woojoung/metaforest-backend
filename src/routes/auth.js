@@ -219,7 +219,7 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
             }
 
             const fullUserWithoutPassword = await User.findOne({
-                where: { email: user.email },
+                where: { accountId: user.accountId },
                 attributes: {
                     exclude: ['password'],
                 }

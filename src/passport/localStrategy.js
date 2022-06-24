@@ -4,16 +4,16 @@ const { User } = require('../db/models');
 
 module.exports = () => {
     passport.use('local', new LocalStrategy({
-        usernameField: 'email',
+        usernameField: 'accountId',
         passwordField: 'password',
-    }, async (email, password, done) => { 
+    }, async (accountId, password, done) => { 
         try {
             const user = await User.findOne({
-                where: { email: email },
+                where: { accountId: accountId },
                 plain: true
             });
             if (!user) {
-                return done(null, false, { message: 'Incorrect email'});
+                return done(null, false, { message: 'Incorrect accountId'});
             }
 
             if (password === user.password) { 
