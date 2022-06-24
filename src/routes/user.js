@@ -34,7 +34,7 @@ const eApiMessageType = {
     USER_SIGNUP_AUTHCODE_REQ : 11010,
     USER_FIND_ACCOUNT_ID_REQ : 11011,
     USER_FIND_PASSWD_REQ : 11012,
-    // USER_CREATE_REQ : 11013,
+    USER_CREATE_REQ : 11013,
     USER_SIGNUP_AUTH_MOBILE_REQ : 11013,
 
 
@@ -184,22 +184,21 @@ router.post('/', isLoggedIn, async (req, res, next) => {
             // console.log(getRowUser)
             res.status(200).send({ status: 200, message: "success to get user info", data: {rows: getRowUser}});
         } else if (req.body.msgType === eApiMessageType.USER_UPDATE_REQ) {
-            await User.update({
+            const updateUser = await User.update({
                 userNickname: req.body.data.userNickname,
                 profileImageUrl: req.body.data.profileImageUrl,
                 accountId: req.body.data.accountId,
                 password: req.body.data.password,
                 email: req.body.data.email,
-                gender: req.body.data.gender,
-                birth: req.body.data.birth,
+                // gender: req.body.data.gender,
+                // birth: req.body.data.birth,
                 md5Mobile: req.body.data.md5Mobile,
-                marketingAgreeTime: req.body.data.marketingAgreeTime,
+                // marketingAgreeTime: req.body.data.marketingAgreeTime,
                 partnerId: req.body.data.partnerId,
-                accessLevel: req.body.data.accessLevel,
-                updatedAt: req.body.data.updatedAt
-            }, {where: { userId: req.body.data.userId }});
+                // accessLevel: req.body.data.accessLevel,
+            }, {where: { userId: req.user.dataValues.userId }});
             
-            res.status(200).send({ status: 200, message: "success to update user info", data: {}});
+            res.status(200).send({ status: 200, message: "success to update user info", data: updateUser});
         } else if (req.body.msgType === eApiMessageType.USER_FIND_ACCOUNT_ID_REQ) {
             const getRowUser = await User.findOne({
                 where: { userNickname: req.body.data.userNickname, email: req.body.data.email  } 
@@ -226,12 +225,12 @@ router.post('/', isLoggedIn, async (req, res, next) => {
             res.status(200).send({ status: 200, message: "success to send email"});
         } else if (req.body.msgType === eApiMessageType.USER_CREATE_REQ) {
             // User 테이블에 생성하기
-            await User.create({
-                password: req.body.data.password,
-                email: req.body.data.email,
-                accessLevel: req.body.data.accessLevel,
-                createdAt: req.body.data.createdAt
-            });
+            // await User.create({
+            //     password: req.body.data.password,
+            //     email: req.body.data.email,
+            //     accessLevel: req.body.data.accessLevel,
+            //     createdAt: req.body.data.createdAt
+            // });
             
             res.status(200).send({ status: 200, message: "success to create admin", data: {}});
         } else if (req.body.msgType === eApiMessageType.USER_CHANGE_PASSWD_REQ) {
