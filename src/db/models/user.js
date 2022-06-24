@@ -77,7 +77,7 @@ module.exports = class User extends Sequelize.Model {
                 comment: '권한 레벨'
             }
         },{
-            indexes: [{type: 'UNIQUE', fields: ['userNickname']}],
+            // indexes: [{type: 'UNIQUE', fields: ['accountId']}],
             sequelize,
             timestamps: true, // createAt, updateAt 자동 생성
             underscored: false, // sequelize에서 _ 사용할지 말지 ex) createAt -> create_at

@@ -80,20 +80,31 @@ router.post('/signup', isNotLoggedIn, async (req, res, next) => {
             });
             
         } else if (req.body.msgType === eApiMessageType.USER_SIGNUP_REQ) {
-            const exEmail = await User.findOne({ // 이메일 검사
+            const exAccountId = await User.findOne({
                 where: {
-                    email: req.body.data.email,
+                    accountId: req.body.data.accountId,
                 }
             });
+            // const exEmail = await User.findOne({ // 이메일 검사
+            //     where: {
+            //         email: req.body.data.email,
+            //     }
+            // });
             const exNickname = await User.findOne({ // 이름 검사
                 where: {
                     userNickname: req.body.data.userNickname,
                 }
             });
-            if (exEmail) {
-                // return 후 router 종료
-                return res.status(200).send({ status: 500, errCode: 500, message: "used email"});
+
+            if (exAccountId) {
+                return res.status(200).send({ status: 302, errCode: 302, message: "used accountId"});
             }
+
+            // if (exEmail) {
+            //     // return 후 router 종료
+            //     return res.status(200).send({ status: 500, errCode: 500, message: "used email"});
+            // }
+
             if (exNickname) {
                 return res.status(200).send({ status: 500, errCode: 500, message: "used nickname"});
             }
@@ -104,11 +115,12 @@ router.post('/signup', isNotLoggedIn, async (req, res, next) => {
                 accountId: req.body.data.accountId,
                 password: req.body.data.password,
                 email: req.body.data.email,
-                gender: req.body.data.gender,
-                birth: req.body.data.birth,
+                // gender: req.body.data.gender,
+                // birth: req.body.data.birth,
                 md5Mobile: req.body.data.md5Mobile,
                 marketingAgreeTime: req.body.data.marketingAgreeTime,
                 accessLevel: req.body.data.accessLevel,
+                partnerId: req.body.data.partnerId
             });
 
             res.status(201).send({ status: 200, errCode: 200, message: "success to create user"});
