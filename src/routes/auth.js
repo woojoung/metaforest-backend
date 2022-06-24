@@ -46,7 +46,7 @@ const eApiMessageType = {
 
 const generateRandom = function(min, max) {
     let randomNum = Math.floor(Math.random() * (max - min + 1)) + min;
-    return randomNum.toString()
+    return randomNum.toString();
 }
 
 // GET /
@@ -60,7 +60,7 @@ router.post('/signup', isNotLoggedIn, async (req, res, next) => {
     try {
         if (req.body.msgType === eApiMessageType.USER_SIGNUP_AUTHCODE_REQ) {
             const sendEmail = req.body.data.email
-            const authCode = generateRandom(11111, 99999);
+            const authCode = await generateRandom(11111, 99999);
 
             const mailOptions = {
                 from: `metaforest <${process.env.USER_EMAIL}>`,
@@ -142,7 +142,7 @@ router.post('/signup', isNotLoggedIn, async (req, res, next) => {
             hmac.update(accessKeyId);
             const signature = hmac.digest('base64');
 
-            const authCode = generateRandom(11111, 99999);
+            const authCode = await generateRandom(11111, 99999);
 
             const body = {
                 type: "SMS",
