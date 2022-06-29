@@ -4,7 +4,7 @@ const User = require('./user');
 // const Event = require('./event');
 const Notice = require('./notice');
 const Faq = require('./faq');
-const Partner = require('./partner')
+const Partner = require('./partner');
 
 const env = process.env.NODE_ENV || 'development';
 const config = require('../config/config')[env];
