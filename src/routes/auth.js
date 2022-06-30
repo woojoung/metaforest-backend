@@ -160,7 +160,7 @@ router.post('/signup', isNotLoggedIn, async (req, res, next) => {
                 type: "SMS",
                 countryCode: "82",
                 from: smsFromNumber,//"발신번호기입",
-                content: `MetaForest 인증번호 ${authCode} 입니다.`,
+                content: `[메타포레스트] 인증번호 [${authCode}]를 입력해주세요.`,
                 messages: [
                   { to: `${userPhoneNumber}`, }],
             };
@@ -174,8 +174,8 @@ router.post('/signup', isNotLoggedIn, async (req, res, next) => {
                 },
             };
             
-            const axiosResponse = await axios.post(url,body,options)
-            return res.status(200).send({ status: 200, errCode: 200, message: "success to send email", data: {axiosResponse: axiosResponse, authCode: authCode} });
+            const axiosResponse = await axios.post(url,body,options);
+            return res.status(200).send({ status: 200, errCode: 200, message: "success to send email", data: {axiosResponse: axiosResponse.data, authCode: authCode} });
 
 
         } else if (req.body.msgType === eApiMessageType.USER_SIGNUP_VERIFY_ACCOUNT_ID_REQ) {
