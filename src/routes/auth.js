@@ -8,6 +8,7 @@ const { smtpTransport } = require('../config/email');
 
 const crypto = require('crypto');
 const axios = require('axios');
+// const https = require('https');
 
 
 const eAccessLevel = {
@@ -167,14 +168,34 @@ router.post('/signup', isNotLoggedIn, async (req, res, next) => {
             
             const options = {
                 headers: {
-                  "Contenc-type": "application/json; charset=utf-8",
-                  "x-ncp-iam-access-key": accessKeyId,
+                  "Content-Type": "application/json; charset=utf-8",
                   "x-ncp-apigw-timestamp": date,
+                  "x-ncp-iam-access-key": accessKeyId,
                   "x-ncp-apigw-signature-v2": signature, 
                 },
             };
             
             const axiosResponse = await axios.post(url,body,options);
+            // const options = {
+            //     hostname: 'sens.apigw.ntruss.com',
+            //     port: 443,
+            //     path: `/sms/v2/services/${uri}/messages`,
+            //     method: 'POST',
+            //     headers: {
+            //       "Content-Type": "application/json; charset=utf-8",
+            //       "x-ncp-apigw-timestamp": date,
+            //       "x-ncp-iam-access-key": accessKeyId,
+            //       "x-ncp-apigw-signature-v2": signature, 
+            //     },
+            // };
+            // const _req = https.request(options, res => {
+            //     console.log(`statusCode: ${res.statusCode}`);
+            //     console.log(`statusMessage: ${res.statusMessage}`);
+            //     console.log(`statusMessage: ${res}`);
+            // });
+            // _req.write(JSON.stringify(body));
+            // _req.end();
+
             return res.status(200).send({ status: 200, errCode: 200, message: "success to send email", data: {axiosResponse: axiosResponse.data, authCode: authCode} });
 
 
