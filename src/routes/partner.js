@@ -129,9 +129,9 @@ router.post('/', isLoggedIn, async (req, res, next) => {
                 order: [['partnerId', 'DESC']],
             });
 
-            const getRowsUser = await User.findAll({
-                order: [['userId', 'DESC']]
-            });
+            // const getRowsUser = await User.findAll({
+            //     order: [['userId', 'DESC']]
+            // });
 
             let partnerId = 0;
             let userCount = 0;

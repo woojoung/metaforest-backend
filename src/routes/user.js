@@ -236,7 +236,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
         } else if (req.body.msgType === eApiMessageType.USER_CHANGE_PASSWD_REQ) {
             await User.update({
                 password: req.body.data.password,
-                updatedAt: req.body.data.updatedAt
+                // updatedAt: req.body.data.updatedAt
             }, {where: { userId: req.body.data.userId }});
             
             res.status(200).send({ status: 200, message: "success to change user password", data: {rows: getRowUser}});
