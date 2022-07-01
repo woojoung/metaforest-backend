@@ -5,8 +5,10 @@ const User = require('./user');
 const Notice = require('./notice');
 const Faq = require('./faq');
 const Partner = require('./partner');
+const dotenv = require('dotenv');
+dotenv.config();
 
-const env = process.env.NODE_ENV || 'development';
+const env = ( process.env.NODE_ENV && ( process.env.NODE_ENV ).trim().toLowerCase() == 'production' ) ? 'production' : 'development';
 const config = require('../config/config')[env];
 const db = {};
 

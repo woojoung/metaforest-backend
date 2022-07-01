@@ -39,8 +39,10 @@ app.set('trust proxy', 1);
 
 if (process.env.NODE_ENV === 'production') {
     app.use(morgan('combined'));
+    console.log('production mode');
 } else {
     app.use(morgan('dev'));
+    console.log('development mode');
 }
 
 const sessionStore = new MySQLStore({
